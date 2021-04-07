@@ -1,0 +1,299 @@
+hedmo@tf700t ~ $ cat /var/log/Xorg.0.log
+[   109.119] 
+X.Org X Server 1.20.10
+X Protocol Version 11, Revision 0
+[   109.122] Build Operating System: Linux 5.12.0-rc1-next-20210302+ armv7l Gentoo
+[   109.122] Current Operating System: Linux tf700t 5.12.0-rc5-next-20210401 #2 SMP PREEMPT Tue Apr 6 00:37:22 CEST 2021 armv7l
+[   109.123] Kernel command line: verbose text console=tty0 root=/dev/mmcblk1p1 rw
+[   109.124] Build Date: 15 March 2021  10:34:07PM
+[   109.125]  
+[   109.126] Current version of pixman: 0.40.0
+[   109.127]    Before reporting problems, check http://wiki.x.org
+        to make sure that you have the latest version.
+[   109.127] Markers: (--) probed, (**) from config file, (==) default setting,
+        (++) from command line, (!!) notice, (II) informational,
+        (WW) warning, (EE) error, (NI) not implemented, (??) unknown.
+[   109.133] (==) Log file: "/var/log/Xorg.0.log", Time: Wed Apr  7 20:46:04 2021
+[   109.357] (==) Using config file: "/etc/X11/xorg.conf"
+[   109.357] (==) Using config directory: "/etc/X11/xorg.conf.d"
+[   109.358] (==) Using system config directory "/usr/share/X11/xorg.conf.d"
+[   109.380] (==) ServerLayout "Layout0"
+[   109.380] (**) |-->Screen "ScreenLVDS" (0)
+[   109.380] (**) |   |-->Monitor "MonitorLVDS"
+[   109.382] (**) |   |-->Device "DeviceLVDS"
+[   109.382] (**) |   |-->GPUDevice "DeviceLVDS"
+[   109.382] (**) Option "StandbyTime" "15"
+[   109.382] (==) Automatically adding devices
+[   109.382] (==) Automatically enabling devices
+[   109.382] (==) Automatically adding GPU devices
+[   109.382] (==) Max clients allowed: 256, resource mask: 0x1fffff
+[   109.458] (WW) The directory "/usr/share/fonts/TTF/" does not exist.
+[   109.459]    Entry deleted from font path.
+[   109.459] (WW) The directory "/usr/share/fonts/OTF/" does not exist.
+[   109.460]    Entry deleted from font path.
+[   109.461] (WW) The directory "/usr/share/fonts/Type1/" does not exist.
+[   109.461]    Entry deleted from font path.
+[   109.463] (WW) `fonts.dir' not found (or not valid) in "/usr/share/fonts/100dpi/".
+[   109.463]    Entry deleted from font path.
+[   109.463]    (Run 'mkfontdir' on "/usr/share/fonts/100dpi/").
+[   109.466] (WW) `fonts.dir' not found (or not valid) in "/usr/share/fonts/75dpi/".
+[   109.466]    Entry deleted from font path.
+[   109.466]    (Run 'mkfontdir' on "/usr/share/fonts/75dpi/").
+[   109.466] (==) FontPath set to:
+        /usr/share/fonts/misc/
+[   109.466] (**) ModulePath set to "/usr/lib/xorg/modules"
+[   109.467] (II) The server relies on udev to provide the list of input devices.
+        If no devices become available, reconfigure udev or disable AutoAddDevices.
+[   109.467] (II) Loader magic: 0x697eb8
+[   109.467] (II) Module ABI versions:
+[   109.467]    X.Org ANSI C Emulation: 0.4
+[   109.467]    X.Org Video Driver: 24.1
+[   109.467]    X.Org XInput driver : 24.1
+[   109.467]    X.Org Server Extension : 10.0
+[   109.474] (++) using VT number 7
+
+[   109.474] (II) systemd-logind: logind integration requires -keeptty and -keeptty was not provided, disabling logind integration
+[   109.477] (II) xfree86: Adding drm device (/dev/dri/card0)
+[   109.492] (II) no primary bus or device found
+[   109.492]    falling back to /sys/devices/soc0/50000000.host1x/drm/drm/card0
+[   109.492] (II) "glx" will be loaded. This was enabled by default and also specified in the config file.
+[   109.493] (II) LoadModule: "glx"
+[   109.501] (II) Loading /usr/lib/xorg/modules/extensions/libglx.so
+[   110.677] (II) Module glx: vendor="X.Org Foundation"
+[   110.677]    compiled for 1.20.10, module version = 1.0.0
+[   110.677]    ABI class: X.Org Server Extension, version 10.0
+[   110.677] (II) LoadModule: "record"
+[   110.677] (II) Module "record" already built-in
+[   110.677] (II) LoadModule: "i2c"
+[   110.677] (II) Module "i2c" already built-in
+[   110.677] (II) LoadModule: "opentegra"
+[   110.767] (II) Loading /usr/lib/xorg/modules/drivers/opentegra_drv.so
+[   111.186] (II) Module opentegra: vendor="X.Org Foundation"
+[   111.186]    compiled for 1.20.10, module version = 0.6.0
+[   111.186]    Module class: X.Org Video Driver
+[   111.186]    ABI class: X.Org Video Driver, version 24.1
+[   111.187] (II) opentegra: Open Source Driver for NVIDIA Tegra: kms
+[   111.188] (II) TegraCheckHardware: Tegra20/30 DRM support detected
+[   111.194] (WW) Falling back to old probe method for opentegra
+[   111.211] (II) opentegra(0): Creating default Display subsection in Screen section
+        "ScreenLVDS" for depth/fbbpp 24/32
+[   111.211] (**) opentegra(0): Depth 24, (--) framebuffer bpp 32
+[   111.211] (==) opentegra(0): RGB weight 888
+[   111.211] (==) opentegra(0): Default visual is TrueColor
+[   111.211] (II) opentegra(0): HW Cursor: enabled YES
+[   111.212] (II) opentegra(0): Output LVDS-0 using monitor section MonitorLVDS
+[   111.212] (II) opentegra(0): Output HDMI-0 has no monitor section
+[   111.213] (II) opentegra(0): EDID for output LVDS-0
+[   111.213] (II) opentegra(0): Printing probed modes for output LVDS-0
+[   111.213] (II) opentegra(0): Modeline "1920x1200"x60.0  154.00  1920 1968 2000 2080  1200 1203 1209 1235 -hsync -vsync (74.0 kHz eP)
+[   111.213] (II) opentegra(0): EDID for output HDMI-0
+[   111.213] (II) opentegra(0): Output LVDS-0 connected
+[   111.213] (II) opentegra(0): Output HDMI-0 disconnected
+[   111.213] (II) opentegra(0): Using exact sizes for initial modes
+[   111.213] (II) opentegra(0): Output LVDS-0 using initial mode 1920x1200 +0+0
+[   111.213] (==) opentegra(0): Using gamma correction (1.0, 1.0, 1.0)
+[   111.213] (**) opentegra(0): Display dimensions: (332, 211) mm
+[   111.213] (**) opentegra(0): DPI set to (146, 144)
+[   111.214] (II) opentegra(0): EXA HW Acceleration: enabled YES
+[   111.214] (II) opentegra(0): EXA Compositing: enabled YES
+[   111.214] (II) opentegra(0): EXA pool allocator: enabled YES
+[   111.214] (II) opentegra(0): EXA pixmap refrigerator: enabled YES
+[   111.214] (II) opentegra(0): EXA LZ4 compression: enabled YES
+[   111.214] (II) opentegra(0): EXA JPEG compression: enabled NO
+[   111.214] (II) opentegra(0): EXA JPEG compression quality: 75
+[   111.214] (II) opentegra(0): EXA PNG compression: enabled YES
+[   111.214] (II) opentegra(0): EXA secure erase pixmaps: enabled NO
+[   111.214] (II) Loading sub module "dri2"
+[   111.214] (II) LoadModule: "dri2"
+[   111.214] (II) Module "dri2" already built-in
+[   111.214] (II) Loading sub module "fb"
+[   111.214] (II) LoadModule: "fb"
+[   111.215] (II) Loading /usr/lib/xorg/modules/libfb.so
+[   111.271] (II) Module fb: vendor="X.Org Foundation"
+[   111.272]    compiled for 1.20.10, module version = 1.0.0
+[   111.273]    ABI class: X.Org ANSI C Emulation, version 0.4
+[   111.273] (II) Loading sub module "exa"
+[   111.273] (II) LoadModule: "exa"
+[   111.274] (II) Loading /usr/lib/xorg/modules/libexa.so
+[   111.312] (II) Module exa: vendor="X.Org Foundation"
+[   111.312]    compiled for 1.20.10, module version = 2.6.0
+[   111.312]    ABI class: X.Org Video Driver, version 24.1
+[   111.410] (**) opentegra(0): DPMS enabled
+[   111.429] (II) opentegra(0): Tegra DRM kernel version 99997
+[   111.431] (II) /var/tmp/portage/x11-drivers/xf86-video-opentegra-9999/work/xf86-video-opentegra-9999/src/gpu/tegra_stream_v2.c:647/grate_stream_create_v2(): success
+[   111.432] (II) Tegra DRM uses IOMMU: YES
+[   111.432] (II) /var/tmp/portage/x11-drivers/xf86-video-opentegra-9999/work/xf86-video-opentegra-9999/src/gpu/tegra_stream_v2.c:647/grate_stream_create_v2(): success
+[   111.432] (II) /var/tmp/portage/x11-drivers/xf86-video-opentegra-9999/work/xf86-video-opentegra-9999/src/gpu/tegra_stream_v2.c:647/grate_stream_create_v2(): success
+[   111.433] (II) /var/tmp/portage/x11-drivers/xf86-video-opentegra-9999/work/xf86-video-opentegra-9999/src/gpu/tegra_stream_v2.c:647/grate_stream_create_v2(): success
+[   111.433] (II) opentegra(0): EXA using GEM DONT_KMAP
+[   111.433] (II) opentegra(0): EXA using GEM CREATE_SPARSE
+[   111.434] (II) EXA(0): Driver allocated offscreen pixmaps
+[   111.434] (II) EXA(0): Driver registered support for the following operations:
+[   111.434] (II)         Solid
+[   111.434] (II)         Copy
+[   111.434] (II)         Composite (RENDER acceleration)
+[   111.435] (II)         UploadToScreen
+[   111.435] (II)         DownloadFromScreen
+[   111.435] (II) opentegra(0): EXA initialized
+[   111.435] (==) opentegra(0): Backing store enabled
+[   111.436] (==) opentegra(0): Silken mouse enabled
+[   111.436] (WW) opentegra(0): Option "Monitor-HDMI-1" is not used
+[   111.457] (II) opentegra(0): XV adaptor initialized
+[   111.457] (II) opentegra(0): VBLANK initialized
+[   111.457] (II) opentegra(0): [DRI2] Setup complete
+[   111.457] (II) opentegra(0): [DRI2]   DRI driver: tegra
+[   111.457] (II) opentegra(0): [DRI2]   VDPAU driver: tegra
+[   111.458] (II) opentegra(0): DRI2 initialized
+[   111.494] (II) Initializing extension Generic Event Extension
+[   111.495] (II) Initializing extension SHAPE
+[   111.495] (II) Initializing extension MIT-SHM
+[   111.496] (II) Initializing extension XInputExtension
+[   111.499] (II) Initializing extension XTEST
+[   111.500] (II) Initializing extension BIG-REQUESTS
+[   111.500] (II) Initializing extension SYNC
+[   111.501] (II) Initializing extension XKEYBOARD
+[   111.502] (II) Initializing extension XC-MISC
+[   111.502] (II) Initializing extension XFIXES
+[   111.503] (II) Initializing extension RENDER
+[   111.503] (II) Initializing extension RANDR
+[   111.504] (II) Initializing extension COMPOSITE
+[   111.504] (II) Initializing extension DAMAGE
+[   111.505] (II) Initializing extension MIT-SCREEN-SAVER
+[   111.505] (II) Initializing extension DOUBLE-BUFFER
+[   111.506] (II) Initializing extension RECORD
+[   111.506] (II) Initializing extension DPMS
+[   111.507] (II) Initializing extension Present
+[   111.507] (II) Initializing extension DRI3
+[   111.508] (II) Initializing extension X-Resource
+[   111.508] (II) Initializing extension XVideo
+[   111.509] (II) Initializing extension XVideo-MotionCompensation
+[   111.509] (II) Initializing extension GLX
+[   139.056] (EE) AIGLX error: Calling driver entry point failed
+[   139.083] (II) IGLX: Loaded and initialized swrast
+[   139.083] (II) GLX: Initialized DRISWRAST GL provider for screen 0
+[   139.083] (II) Initializing extension XFree86-VidModeExtension
+[   139.083] (II) Initializing extension XFree86-DGA
+[   139.083] (II) Initializing extension XFree86-DRI
+[   139.083] (II) Initializing extension DRI2
+[   139.119] (II) opentegra(0): Setting screen physical size to 332 x 211
+[   140.994] (II) config/udev: Adding input device Elan Touchscreen (/dev/input/event1)
+[   140.995] (**) Elan Touchscreen: Applying InputClass "libinput touchscreen catchall"
+[   140.995] (**) Elan Touchscreen: Applying InputClass "libinput touchscreen catchall"
+[   140.995] (II) LoadModule: "libinput"
+[   140.995] (II) Loading /usr/lib/xorg/modules/input/libinput_drv.so
+[   141.176] (II) Module libinput: vendor="X.Org Foundation"
+[   141.176]    compiled for 1.20.10, module version = 0.30.0
+[   141.176]    Module class: X.Org XInput Driver
+[   141.177]    ABI class: X.Org XInput driver, version 24.1
+[   141.177] (II) Using input driver 'libinput' for 'Elan Touchscreen'
+[   141.177] (**) Elan Touchscreen: always reports core events
+[   141.178] (**) Option "Device" "/dev/input/event1"
+[   141.179] (**) Option "_source" "server/udev"
+[   141.489] (II) event1  - Elan Touchscreen: is tagged by udev as: Touchscreen
+[   141.491] (II) event1  - Elan Touchscreen: device is a touch device
+[   141.492] (II) event1  - Elan Touchscreen: device removed
+[   141.561] (**) Option "config_info" "udev:/sys/devices/soc0/7000c400.i2c/i2c-1/1-0010/input/input1/event1"
+[   141.561] (II) XINPUT: Adding extended input device "Elan Touchscreen" (type: TOUCHSCREEN, id 6)
+[   141.563] (**) Option "AccelerationScheme" "none"
+[   141.563] (**) Elan Touchscreen: (accel) selected scheme none/0
+[   141.563] (**) Elan Touchscreen: (accel) acceleration factor: 2.000
+[   141.563] (**) Elan Touchscreen: (accel) acceleration threshold: 4
+[   141.568] (II) event1  - Elan Touchscreen: is tagged by udev as: Touchscreen
+[   141.571] (II) event1  - Elan Touchscreen: device is a touch device
+[   141.573] (II) config/udev: Adding input device tegra-hda HDMI/DP,pcm=3 (/dev/input/event6)
+[   141.574] (II) No input driver specified, ignoring this device.
+[   141.574] (II) This device may have been added with another device file.
+[   141.576] (II) config/udev: Adding input device AT Raw Set 2 keyboard (/dev/input/event4)
+[   141.576] (**) AT Raw Set 2 keyboard: Applying InputClass "libinput keyboard catchall"
+[   141.576] (**) AT Raw Set 2 keyboard: Applying InputClass "libinput keyboard catchall"
+[   141.576] (II) Using input driver 'libinput' for 'AT Raw Set 2 keyboard'
+[   141.576] (**) AT Raw Set 2 keyboard: always reports core events
+[   141.576] (**) Option "Device" "/dev/input/event4"
+[   141.577] (**) Option "_source" "server/udev"
+[   141.581] (II) event4  - AT Raw Set 2 keyboard: is tagged by udev as: Keyboard
+[   141.581] (II) event4  - AT Raw Set 2 keyboard: device is a keyboard
+[   141.582] (II) event4  - AT Raw Set 2 keyboard: device removed
+[   141.651] (**) Option "config_info" "udev:/sys/devices/soc0/dock-i2c/i2c-5/5-0019/asusec-kbc.5.auto/serio0/input/input2/event4"
+[   141.652] (II) XINPUT: Adding extended input device "AT Raw Set 2 keyboard" (type: KEYBOARD, id 7)
+[   141.677] (II) event4  - AT Raw Set 2 keyboard: is tagged by udev as: Keyboard
+[   141.677] (II) event4  - AT Raw Set 2 keyboard: device is a keyboard
+[   141.679] (II) config/udev: Adding input device ETPS/2 Elantech Touchpad (/dev/input/event5)
+[   141.679] (**) ETPS/2 Elantech Touchpad: Applying InputClass "libinput touchpad catchall"
+[   141.679] (**) ETPS/2 Elantech Touchpad: Applying InputClass "libinput touchpad catchall"
+[   141.679] (II) Using input driver 'libinput' for 'ETPS/2 Elantech Touchpad'
+[   141.679] (**) ETPS/2 Elantech Touchpad: always reports core events
+[   141.679] (**) Option "Device" "/dev/input/event5"
+[   141.679] (**) Option "_source" "server/udev"
+[   141.681] (II) event5  - ETPS/2 Elantech Touchpad: is tagged by udev as: Touchpad
+[   141.682] (II) event5  - ETPS/2 Elantech Touchpad: device is a touchpad
+[   141.683] (II) event5  - ETPS/2 Elantech Touchpad: device removed
+[   141.772] (**) Option "Tapping" "on"
+[   141.774] (**) Option "NaturalScrolling" "true"
+[   141.782] (**) Option "config_info" "udev:/sys/devices/soc0/dock-i2c/i2c-5/5-0019/asusec-kbc.5.auto/serio1/input/input6/event5"
+[   141.783] (II) XINPUT: Adding extended input device "ETPS/2 Elantech Touchpad" (type: TOUCHPAD, id 8)
+[   141.792] (**) Option "AccelerationScheme" "none"
+[   141.792] (**) ETPS/2 Elantech Touchpad: (accel) selected scheme none/0
+[   141.793] (**) ETPS/2 Elantech Touchpad: (accel) acceleration factor: 2.000
+[   141.793] (**) ETPS/2 Elantech Touchpad: (accel) acceleration threshold: 4
+[   141.795] (II) event5  - ETPS/2 Elantech Touchpad: is tagged by udev as: Touchpad
+[   141.797] (II) event5  - ETPS/2 Elantech Touchpad: device is a touchpad
+[   141.798] (II) config/udev: Adding input device ASUS-TF201-DOCK Keyboard Ext (/dev/input/event2)
+[   141.799] (**) ASUS-TF201-DOCK Keyboard Ext: Applying InputClass "libinput keyboard catchall"
+[   141.799] (**) ASUS-TF201-DOCK Keyboard Ext: Applying InputClass "libinput keyboard catchall"
+[   141.799] (II) Using input driver 'libinput' for 'ASUS-TF201-DOCK Keyboard Ext'
+[   141.799] (**) ASUS-TF201-DOCK Keyboard Ext: always reports core events
+[   141.799] (**) Option "Device" "/dev/input/event2"
+[   141.799] (**) Option "_source" "server/udev"
+[   141.801] (II) event2  - ASUS-TF201-DOCK Keyboard Ext: is tagged by udev as: Keyboard
+[   141.801] (II) event2  - ASUS-TF201-DOCK Keyboard Ext: device is a keyboard
+[   141.802] (II) event2  - ASUS-TF201-DOCK Keyboard Ext: device removed
+[   141.881] (**) Option "config_info" "udev:/sys/devices/soc0/dock-i2c/i2c-5/5-0019/asusec-keys.6.auto/input/input3/event2"
+[   141.882] (II) XINPUT: Adding extended input device "ASUS-TF201-DOCK Keyboard Ext" (type: KEYBOARD, id 9)
+[   141.905] (II) event2  - ASUS-TF201-DOCK Keyboard Ext: is tagged by udev as: Keyboard
+[   141.905] (II) event2  - ASUS-TF201-DOCK Keyboard Ext: device is a keyboard
+[   141.906] (II) config/udev: Adding input device gpio-keys (/dev/input/event3)
+[   141.906] (**) gpio-keys: Applying InputClass "libinput keyboard catchall"
+[   141.906] (**) gpio-keys: Applying InputClass "libinput keyboard catchall"
+[   141.906] (II) Using input driver 'libinput' for 'gpio-keys'
+[   141.906] (**) gpio-keys: always reports core events
+[   141.906] (**) Option "Device" "/dev/input/event3"
+[   141.907] (**) Option "_source" "server/udev"
+[   141.908] (II) event3  - gpio-keys: is tagged by udev as: Keyboard Switch
+[   141.908] (II) event3  - gpio-keys: device is a keyboard
+[   141.908] (II) event3  - gpio-keys: device is a switch device
+[   141.908] (II) event3  - gpio-keys: device is a switch device
+[   141.908] (II) event3  - gpio-keys: device removed
+[   141.930] (**) Option "config_info" "udev:/sys/devices/soc0/gpio-keys/input/input4/event3"
+[   141.930] (II) XINPUT: Adding extended input device "gpio-keys" (type: KEYBOARD, id 10)
+[   141.935] (II) event3  - gpio-keys: is tagged by udev as: Keyboard Switch
+[   141.936] (II) event3  - gpio-keys: device is a keyboard
+[   141.936] (II) event3  - gpio-keys: device is a switch device
+[   141.936] (II) event3  - gpio-keys: device is a switch device
+[   141.939] (II) config/udev: Adding input device TF700T RT5631 Headphones Jack (/dev/input/event7)
+[   141.940] (II) No input driver specified, ignoring this device.
+[   141.940] (II) This device may have been added with another device file.
+[   141.942] (II) config/udev: Adding input device gpio-vibrator (/dev/input/event0)
+[   141.942] (II) No input driver specified, ignoring this device.
+[   141.942] (II) This device may have been added with another device file.
+[   243.283] Not using O_TMPFILE
+[   262.617] Not using O_TMPFILE
+[   262.631] Not using O_TMPFILE
+[   262.640] Not using O_TMPFILE
+[   262.646] Not using O_TMPFILE
+[   262.924] Not using O_TMPFILE
+[   301.079] (II) Axis 0 value 1501 is outside expected range [-58, 1218]
+See https://wayland.freedesktop.org/libinput/doc/1.17.1/absolute_coordinate_ranges.html for details
+[   305.182] Not using O_TMPFILE
+[   309.111] Not using O_TMPFILE
+[   310.206] Not using O_TMPFILE
+[   312.635] Not using O_TMPFILE
+[   904.678] Not using O_TMPFILE
+[   924.273] Not using O_TMPFILE
+[  1124.027] Not using O_TMPFILE
+[  1162.815] Not using O_TMPFILE
+[  1175.035] Not using O_TMPFILE
+[  1175.462] Not using O_TMPFILE
+[  1183.176] Not using O_TMPFILE
+[  1195.743] Not using O_TMPFILE
+hedmo@tf700t ~ $ 
+ 
