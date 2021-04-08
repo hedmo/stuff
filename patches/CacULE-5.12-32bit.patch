@@ -2421,7 +2421,7 @@ index f7fc5ad6604c..9ba28bf693bf 100644
 ###############32bit patch##############
 
 diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
-index c99fc326ec24..a635cdf7307e 100644
+index c99fc326ec24..e1d9f1daab93 100644
 --- a/kernel/sched/fair.c
 +++ b/kernel/sched/fair.c
 @@ -26,6 +26,8 @@
@@ -2433,6 +2433,15 @@ index c99fc326ec24..a635cdf7307e 100644
  /*
   * Targeted preemption latency for CPU-bound tasks:
   *
+@@ -127,7 +129,7 @@ int __weak arch_asym_cpu_priority(int cpu)
+ 
+ #endif
+ #ifdef CONFIG_CACULE_SCHED
+-int cacule_max_lifetime					= 30000; // in ms
++int cacule_max_lifetime					= 4000; // in ms
+ int cacule_harsh_mode					= 0;
+ int interactivity_factor				= 32768;
+ #endif
 @@ -602,6 +604,7 @@ calc_interactivity(u64 now, struct cacule_node *se)
  {
  	u64 l_se, vr_se, sleep_se = 1ULL, u64_factor;
@@ -2457,4 +2466,32 @@ index c99fc326ec24..a635cdf7307e 100644
  
  	return score_se;
  }
-
+@@ -1041,6 +1048,7 @@ static void reset_lifetime(u64 now, struct sched_entity *se)
+ 	struct cacule_node *cn;
+ 	u64 max_life_ns, life_time;
+ 	s64 diff;
++	u32 rem;
+ 
+ 	/*
+ 	 * left shift 20 bits is approximately = * 1000000
+@@ -1054,9 +1062,9 @@ static void reset_lifetime(u64 now, struct sched_entity *se)
+ 		life_time	= now - cn->cacule_start_time;
+ 		diff		= life_time - max_life_ns;
+ 
+-		if (unlikely(diff > 0)) {
++		if (diff > 0) {
+ 			// multiply life_time by 8 for more precision
+-			u64 old_hrrn_x8	= life_time / ((cn->vruntime >> 3) | 1);
++			u64 old_hrrn_x8	= div_u64_rem(life_time, ((cn->vruntime >> 3) | 1), &rem);
+ 
+ 			// reset life to half max_life (i.e ~15s)
+ 			cn->cacule_start_time = now - (max_life_ns >> 1);
+@@ -1065,7 +1073,7 @@ static void reset_lifetime(u64 now, struct sched_entity *se)
+ 			if (old_hrrn_x8 == 0) old_hrrn_x8 = 1;
+ 
+ 			// reset vruntime based on old hrrn ratio
+-			cn->vruntime = (max_life_ns << 2) / old_hrrn_x8;
++			cn->vruntime = div_u64_rem((max_life_ns << 2), old_hrrn_x8, &rem);
+ 		}
+ 	}
+ }
