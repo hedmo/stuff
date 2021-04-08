@@ -2455,7 +2455,9 @@ index c99fc326ec24..e1d9f1daab93 100644
  
  	if (sleep_se >= vr_se)
 -		score_se = u64_factor / (sleep_se / vr_se);
-+		score_se = div_u64_rem(u64_factor, (sleep_se / vr_se), &r_se_rem);
++		score_se = div_u64_rem(
+u64_factor, (div_u64_rem(sleep_se, vr_se, &r_se_rem)), 
+&r_se_rem);
  	else
 -		score_se = (u64_factor << 1) - (u64_factor / (vr_se / sleep_se));
 +		score_se = (u64_factor << 1) - (
