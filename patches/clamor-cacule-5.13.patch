@@ -141,7 +141,7 @@ index 3ab28de56..02b376bac 100644
  #endif
  
 +#ifdef CONFIG_CACULE_SCHED
-+	printk(KERN_INFO "CacULE CPU scheduler v5.12-r2 by Hamad Al Marri.");
++	printk(KERN_INFO "CacULE CPU scheduler v5.13-rc2-clamor by Hamad Al Marri.");
 +#endif
 +
  	wait_bit_init();
