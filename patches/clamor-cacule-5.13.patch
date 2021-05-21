@@ -282,7 +282,7 @@ index 3bdee5fd7..2462c033b 100644
  			cfs_rq->nr_spread_over);
  	SEQ_printf(m, "  .%-30s: %d\n", "nr_running", cfs_rq->nr_running);
 diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
-index 161b92aa1..321d895c2 100644
+index 161b92aa1..5e8a7e08c 100644
 --- a/kernel/sched/fair.c
 +++ b/kernel/sched/fair.c
 @@ -19,9 +19,15 @@
@@ -1742,14 +1742,14 @@ index 161b92aa1..321d895c2 100644
  /*
   * It checks each scheduling domain to see if it is due to be balanced,
   * and initiates a balancing operation if so.
-@@ -10119,6 +10711,7 @@ static inline int on_null_domain(struct rq *rq)
- {
- 	return unlikely(!rcu_dereference_sched(rq->sd));
+@@ -10114,6 +10706,7 @@ static void rebalance_domains(struct rq *rq, enum cpu_idle_type idle)
+ 		rq->next_balance = next_balance;
+ 
  }
 +#endif
  
- #ifdef CONFIG_NO_HZ_COMMON
- /*
+ static inline int on_null_domain(struct rq *rq)
+ {
 @@ -10147,6 +10740,7 @@ static inline int find_new_ilb(void)
  	return nr_cpu_ids;
  }
@@ -1821,7 +1821,7 @@ index 161b92aa1..321d895c2 100644
 +	set_task_cpu(p, dst_cpu);
 +
 +	// unlock this rq
-+	raw_spin_unlock(&this_rq->lock);
++	raw_spin_unlock(&this_rq->__lock);
 +
 +	/* push to */
 +	rq_lock_irqsave(dst_rq, &rf);
@@ -1850,14 +1850,14 @@ index 161b92aa1..321d895c2 100644
 +	local_irq_restore(rf->flags);
 +
 +	// lock this rq
-+	raw_spin_lock(&this_rq->lock);
++	raw_spin_lock(&this_rq->__lock);
 +	update_rq_clock(this_rq);
 +
 +	activate_task(this_rq, p, ENQUEUE_NOCLOCK);
 +	check_preempt_curr(this_rq, p, 0);
 +
 +	// unlock this rq
-+	raw_spin_unlock(&this_rq->lock);
++	raw_spin_unlock(&this_rq->__lock);
 +}
 +
 +static inline struct rq *
@@ -1949,7 +1949,7 @@ index 161b92aa1..321d895c2 100644
 +	 * re-start the picking loop.
 +	 */
 +	rq_unpin_lock(this_rq, rf);
-+	raw_spin_unlock(&this_rq->lock);
++	raw_spin_unlock(&this_rq->__lock);
 +
 +again:
 +	for_each_online_cpu(src_cpu) {
@@ -1996,7 +1996,7 @@ index 161b92aa1..321d895c2 100644
 +	}
 +
 +out:
-+	raw_spin_lock(&this_rq->lock);
++	raw_spin_lock(&this_rq->__lock);
 +
 +	/*
 +	 * While browsing the domains, we released the rq lock, a task could
@@ -2121,12 +2121,12 @@ index 161b92aa1..321d895c2 100644
 +			continue;
 +
 +		// lock this rq
-+		raw_spin_lock(&this_rq->lock);
++		raw_spin_lock(&this_rq->__lock);
 +		update_rq_clock(this_rq);
 +
 +		if (!this_rq->cfs.head) {
 +			// unlock this rq
-+			raw_spin_unlock(&this_rq->lock);
++			raw_spin_unlock(&this_rq->__lock);
 +			return;
 +		}
 +
@@ -2138,7 +2138,7 @@ index 161b92aa1..321d895c2 100644
 +		}
 +
 +		// unlock this rq
-+		raw_spin_unlock(&this_rq->lock);
++		raw_spin_unlock(&this_rq->__lock);
 +	}
 +
 +	if (cores_round) {
