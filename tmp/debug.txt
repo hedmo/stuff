@@ -3365,12 +3365,15 @@ CONFIG_VIDEO_V4L2_I2C=y
 CONFIG_VIDEO_V4L2_SUBDEV_API=n
 CONFIG_VIDEO_ADV_DEBUG=n
 CONFIG_VIDEO_FIXED_MINOR_RANGES=n
+CONFIG_V4L2_H264=m
+CONFIG_V4L2_MEM2MEM_DEV=m
 # end of Video4Linux options
 
 #
 # Media controller options
 #
 CONFIG_MEDIA_CONTROLLER_DVB=n
+CONFIG_MEDIA_CONTROLLER_REQUEST_API=y
 # end of Media controller options
 
 #
@@ -3509,7 +3512,8 @@ CONFIG_MEDIA_PLATFORM_DRIVERS=y
 CONFIG_V4L_PLATFORM_DRIVERS=n
 CONFIG_SDR_PLATFORM_DRIVERS=n
 CONFIG_DVB_PLATFORM_DRIVERS=n
-CONFIG_V4L_MEM2MEM_DRIVERS=n
+CONFIG_V4L_MEM2MEM_DRIVERS=y
+CONFIG_VIDEO_MEM2MEM_DEINTERLACE=n
 
 #
 # Allegro DVT media platform drivers
@@ -3556,6 +3560,7 @@ CONFIG_VIDEO_CADENCE_CSI2TX=n
 #
 # NVidia media platform drivers
 #
+CONFIG_VIDEO_TEGRA_VDE=m
 
 #
 # NXP media platform drivers
@@ -3606,7 +3611,9 @@ CONFIG_DVB_TEST_DRIVERS=n
 CONFIG_VIDEOBUF2_CORE=m
 CONFIG_VIDEOBUF2_V4L2=m
 CONFIG_VIDEOBUF2_MEMOPS=m
+CONFIG_VIDEOBUF2_DMA_CONTIG=m
 CONFIG_VIDEOBUF2_VMALLOC=m
+CONFIG_VIDEOBUF2_DMA_SG=m
 # end of Media drivers
 
 #
@@ -7247,7 +7254,7 @@ CONFIG_MEMTEST=n
 ==== dmesg ====
 
 [    0.000000] Booting Linux on physical CPU 0x0
-[    0.000000] Linux version 5.17.0-next-20220324+ (hedmo@mya51) (armv7a-hardfloat-linux-gnueabi-gcc (Gentoo 11.2.1_p20220115 p4) 11.2.1 20220115, GNU ld (Gentoo 2.35.2 p1) 2.35.2) #12 SMP Sun Apr 3 19:36:13 CEST 2022
+[    0.000000] Linux version 5.17.0-next-20220324+ (hedmo@mya51) (armv7a-hardfloat-linux-gnueabi-gcc (Gentoo 11.2.1_p20220115 p4) 11.2.1 20220115, GNU ld (Gentoo 2.35.2 p1) 2.35.2) #13 SMP Sat Apr 9 18:26:18 CEST 2022
 [    0.000000] CPU: ARMv7 Processor [412fc099] revision 9 (ARMv7), cr=10c5387d
 [    0.000000] CPU: PIPT / VIPT nonaliasing data cache, VIPT aliasing instruction cache
 [    0.000000] OF: fdt: Machine model: Asus Transformer AiO P1801-T
@@ -7291,529 +7298,575 @@ CONFIG_MEMTEST=n
 [    0.000000] rcu: srcu_init: Setting srcu_struct sizes based on contention.
 [    0.000000] random: get_random_bytes called from start_kernel+0x790/0x964 with crng_init=0
 [    0.000002] sched_clock: 32 bits at 1000kHz, resolution 1000ns, wraps every 2147483647500ns
-[    0.000029] clocksource: timer_us: mask: 0xffffffff max_cycles: 0xffffffff, max_idle_ns: 1911260446275 ns
-[    0.000045] Switching to timer-based delay loop, resolution 1000ns
-[    0.000364] clocksource: tegra_suspend_timer: mask: 0xffffffff max_cycles: 0xffffffff, max_idle_ns: 1911260446275000 ns
-[    0.001258] Console: colour dummy device 80x30
-[    0.001667] printk: console [tty0] enabled
-[    0.001731] Calibrating delay loop (skipped), value calculated using timer frequency.. 2.00 BogoMIPS (lpj=10000)
-[    0.001761] pid_max: default: 32768 minimum: 301
-[    0.002026] Mount-cache hash table entries: 2048 (order: 1, 8192 bytes, linear)
-[    0.002059] Mountpoint-cache hash table entries: 2048 (order: 1, 8192 bytes, linear)
-[    0.003022] CPU: Testing write buffer coherency: ok
-[    0.003076] CPU0: Spectre v2: using BPIALL workaround
-[    0.003431] CPU0: thread -1, cpu 0, socket 0, mpidr 80000000
-[    0.004194] Setting up static identity map for 0x80100000 - 0x801000ac
-[    0.004376] rcu: Hierarchical SRCU implementation.
-[    0.006009] Tegra Revision: A03 SKU: 131 CPU Process: 4 SoC Process: 0
-[    0.006036] Tegra CPU Speedo ID 7, SoC Speedo ID 1
-[    0.007580] smp: Bringing up secondary CPUs ...
-[    0.010533] CPU1: thread -1, cpu 1, socket 0, mpidr 80000001
-[    0.010548] CPU1: Spectre v2: using BPIALL workaround
-[    0.020458] CPU2: thread -1, cpu 2, socket 0, mpidr 80000002
-[    0.020472] CPU2: Spectre v2: using BPIALL workaround
-[    0.030430] CPU3: thread -1, cpu 3, socket 0, mpidr 80000003
-[    0.030446] CPU3: Spectre v2: using BPIALL workaround
-[    0.030571] smp: Brought up 1 node, 4 CPUs
-[    0.030595] SMP: Total of 4 processors activated (8.00 BogoMIPS).
-[    0.030614] CPU: All CPU(s) started in SVC mode.
-[    0.031401] devtmpfs: initialized
-[    0.045651] VFP support v0.3: implementor 41 architecture 3 part 30 variant 9 rev 4
-[    0.045938] clocksource: jiffies: mask: 0xffffffff max_cycles: 0xffffffff, max_idle_ns: 19112604462750000 ns
-[    0.045985] futex hash table entries: 1024 (order: 4, 65536 bytes, linear)
-[    0.068093] pinctrl core: initialized pinctrl subsystem
-[    0.069583] NET: Registered PF_NETLINK/PF_ROUTE protocol family
-[    0.073777] DMA: preallocated 256 KiB pool for atomic coherent allocations
-[    0.074797] thermal_sys: Registered thermal governor 'step_wise'
-[    0.075763] cpuidle: using governor menu
-[    0.098279] No ATAGs?
-[    0.098525] hw-breakpoint: found 5 (+1 reserved) breakpoint and 1 watchpoint registers.
-[    0.098552] hw-breakpoint: maximum watchpoint size is 4 bytes.
-[    0.120914] printk: console [ramoops-1] enabled
-[    0.121092] pstore: Registered ramoops as persistent store backend
-[    0.121181] ramoops: using 0x10000@0xfea00000, ecc: 16
-[    0.132910] iommu: Default domain type: Translated 
-[    0.133040] iommu: DMA domain TLB invalidation policy: strict mode 
-[    0.133629] SCSI subsystem initialized
-[    0.133915] libata version 3.00 loaded.
-[    0.134118] usbcore: registered new interface driver usbfs
-[    0.134319] usbcore: registered new interface driver hub
-[    0.134444] usbcore: registered new device driver usb
-[    0.134682] mc: Linux media interface: v0.10
-[    0.134853] pps_core: LinuxPPS API ver. 1 registered
-[    0.134947] pps_core: Software ver. 5.3.6 - Copyright 2005-2007 Rodolfo Giometti <giometti@linux.it>
-[    0.135119] PTP clock support registered
-[    0.135643] Advanced Linux Sound Architecture Driver Initialized.
-[    0.136481] vgaarb: loaded
-[    0.136972] clocksource: Switched to clocksource timer_us
-[    0.178691] VFS: Disk quotas dquot_6.6.0
-[    0.178926] VFS: Dquot-cache hash table entries: 1024 (order 0, 4096 bytes)
-[    0.776786] random: fast init done
-[    0.784394] NET: Registered PF_INET protocol family
-[    0.784782] IP idents hash table entries: 16384 (order: 5, 131072 bytes, linear)
-[    0.785920] tcp_listen_portaddr_hash hash table entries: 512 (order: 0, 6144 bytes, linear)
-[    0.786120] TCP established hash table entries: 8192 (order: 3, 32768 bytes, linear)
-[    0.786344] TCP bind hash table entries: 8192 (order: 4, 65536 bytes, linear)
-[    0.786538] TCP: Hash tables configured (established 8192 bind 8192)
-[    0.786848] UDP hash table entries: 512 (order: 2, 16384 bytes, linear)
-[    0.787081] UDP-Lite hash table entries: 512 (order: 2, 16384 bytes, linear)
-[    0.787471] NET: Registered PF_UNIX/PF_LOCAL protocol family
-[    0.788162] RPC: Registered named UNIX socket transport module.
-[    0.788333] RPC: Registered udp transport module.
-[    0.788424] RPC: Registered tcp transport module.
-[    0.788576] RPC: Registered tcp NFSv4.1 backchannel transport module.
-[    0.788672] PCI: CLS 0 bytes, default 64
-[    0.789144] Unpacking initramfs...
-[    0.808189] hw perfevents: enabled with armv7_cortex_a9 PMU driver, 7 counters available
-[    0.810215] Initialise system trusted keyrings
-[    0.810662] workingset: timestamp_bits=14 max_order=18 bucket_order=4
-[    0.812011] NFS: Registering the id_resolver key type
-[    0.812157] Key type id_resolver registered
-[    0.812250] Key type id_legacy registered
-[    0.813165] Key type cifs.idmap registered
-[    0.813282] fuse: init (API version 7.36)
-[    0.892222] Key type asymmetric registered
-[    0.892435] Asymmetric key parser 'x509' registered
-[    1.026575] Freeing initrd memory: 3388K
-[    1.028823] alg: self-tests for CTR-KDF (hmac(sha256)) passed
-[    1.029113] bounce: pool size: 64 pages
-[    1.029372] Block layer SCSI generic (bsg) driver version 0.4 loaded (major 246)
-[    1.029517] io scheduler mq-deadline registered
-[    1.029679] io scheduler kyber registered
-[    1.029893] io scheduler bfq registered
-[    1.032356] gpio-9 (init-lpm-in-hog): hogged as input
-[    1.032557] gpio-87 (init-lpm-out-hog): hogged as output/low
-[    1.032660] gpio-136 (init-lpm-out-hog): hogged as output/low
-[    1.038001] tegra-apbdma 6000a000.dma: Tegra20 APB DMA driver registered 32 channels
-[    1.039568] Serial: 8250/16550 driver, 4 ports, IRQ sharing disabled
-[    1.042341] 70006040.serial: ttyTHS2 at MMIO 0x70006040 (irq = 77, base_baud = 0) is a TEGRA_UART
-[    1.042921] 70006200.serial: ttyTHS1 at MMIO 0x70006200 (irq = 78, base_baud = 0) is a TEGRA_UART
-[    1.043217] serial serial0: tty port ttyTHS1 registered
-[    1.055073] loop: module loaded
-[    1.057295] CAN device driver interface
-[    1.058393] ehci_hcd: USB 2.0 'Enhanced' Host Controller (EHCI) Driver
-[    1.058501] ehci-pci: EHCI PCI platform driver
-[    1.059005] usbcore: registered new interface driver cdc_acm
-[    1.059107] cdc_acm: USB Abstract Control Model driver for USB modems and ISDN adapters
-[    1.059293] usbcore: registered new interface driver cdc_wdm
-[    1.059649] usbcore: registered new interface driver uas
-[    1.059856] usbcore: registered new interface driver usb-storage
-[    1.060028] usbcore: registered new interface driver usbserial_generic
-[    1.060209] usbserial: USB Serial support registered for generic
-[    1.060326] usbcore: registered new interface driver usb_serial_simple
-[    1.060500] usbserial: USB Serial support registered for carelink
-[    1.060671] usbserial: USB Serial support registered for zio
-[    1.060777] usbserial: USB Serial support registered for funsoft
-[    1.060948] usbserial: USB Serial support registered for flashloader
-[    1.061054] usbserial: USB Serial support registered for google
-[    1.061230] usbserial: USB Serial support registered for libtransistor
-[    1.061337] usbserial: USB Serial support registered for vivopay
-[    1.061510] usbserial: USB Serial support registered for moto_modem
-[    1.061617] usbserial: USB Serial support registered for motorola_tetra
-[    1.061788] usbserial: USB Serial support registered for nokia
-[    1.061894] usbserial: USB Serial support registered for novatel_gps
-[    1.062065] usbserial: USB Serial support registered for hp4x
-[    1.062172] usbserial: USB Serial support registered for suunto
-[    1.062343] usbserial: USB Serial support registered for siemens_mpi
-[    1.063545] UDC core: couldn't find an available UDC - added [g_ether] to list of pending drivers
-[    1.063652] UDC core: couldn't find an available UDC - added [g_multi] to list of pending drivers
-[    1.065430] tegra_rtc 7000e000.rtc: registered as rtc1
-[    1.065612] tegra_rtc 7000e000.rtc: Tegra internal Real Time Clock
-[    1.065951] i2c_dev: i2c /dev entries driver
-[    1.076000] gpio-1017 (pmic-sleep-hog): hogged as output/high
-[    1.105273] tps65910-rtc tps65910-rtc: registered as rtc0
-[    1.107757] tps65910-rtc tps65910-rtc: setting system clock to 2022-04-09T15:42:21 UTC (1649518941)
-[    1.111654] tegra-wdt 60005000.timer: initialized (heartbeat = 120 sec, nowayout = 0)
-[    1.112129] device-mapper: uevent: version 1.0.3
-[    1.112404] device-mapper: ioctl: 4.46.0-ioctl (2022-02-22) initialised: dm-devel@redhat.com
-[    1.112970] sdhci: Secure Digital Host Controller Interface driver
-[    1.113135] sdhci: Copyright(c) Pierre Ossman
-[    1.113224] sdhci-pltfm: SDHCI platform and OF driver helper
-[    1.113969] usbcore: registered new interface driver usbhid
-[    1.114072] usbhid: USB HID core driver
-[    1.117896] NET: Registered PF_PACKET protocol family
-[    1.118116] NET: Registered PF_KEY protocol family
-[    1.118210] can: controller area network core
-[    1.118436] NET: Registered PF_CAN protocol family
-[    1.118531] can: raw protocol
-[    1.118621] can: broadcast manager protocol
-[    1.118782] can: netlink gateway - max_hops=1
-[    1.119005] Key type dns_resolver registered
-[    1.119589] tegra20-cpufreq tegra20-cpufreq: hardware version 0x10 0x80
-[    1.122163] Registering SWP/SWPB emulation handler
-[    1.122668] mmc0: Invalid maximum block size, assuming 512 bytes
-[    1.122672] tegra voltage-coupler: core voltage initialized to 1300000uV
-[    1.123487] registered taskstats version 1
-[    1.123586] Loading compiled-in X.509 certificates
-[    1.123751] Key type ._fscrypt registered
-[    1.123897] Key type .fscrypt registered
-[    1.123975] Key type fscrypt-provisioning registered
-[    1.124571] pstore: Using crash dump compression: deflate
-[    1.147704] simple-framebuffer abe01000.framebuffer: framebuffer at 0xabe01000, 0x7e9000 bytes
-[    1.147939] simple-framebuffer abe01000.framebuffer: format=a8r8g8b8, mode=1920x1080x32, linelength=7680
-[    1.158419] mmc0: SDHCI controller on 78000600.mmc [78000600.mmc] using ADMA
-[    1.161665] Console: switching to colour frame buffer device 240x67
-[    1.173716] simple-framebuffer abe01000.framebuffer: fb0: simplefb registered!
-[    1.174413] tegra-pmc 7000e400.pmc: emergency thermal reset enabled
-[    1.176770] tegra-host1x 50000000.host1x: Adding to iommu group 0
-[    1.179027] tegra-gr2d 54140000.gr2d: Adding to iommu group 1
-[    1.180247] tegra-gr3d 54180000.gr3d: Adding to iommu group 1
-[    1.214762] using random self ethernet address
-[    1.216092] using random host ethernet address
-[    1.220698] usb0: HOST MAC 7a:bd:53:e8:21:5d
-[    1.222239] usb0: MAC da:1b:6f:a3:a8:21
-[    1.223423] using random self ethernet address
-[    1.224483] using random host ethernet address
-[    1.226511] g_ether gadget: Ethernet Gadget, version: Memorial Day 2008
-[    1.227967] g_ether gadget: g_ether ready
-[    1.243513] mmc0: new DDR MMC card at address 0001
-[    1.244521] mmcblk0: mmc0:0001 HBG4e\x04 29.1 GiB 
-[    1.247968] mmcblk0boot0: mmc0:0001 HBG4e\x04 2.00 MiB 
-[    1.251191] mmcblk0boot1: mmc0:0001 HBG4e\x04 2.00 MiB 
-[    1.252779] ci_hdrc ci_hdrc.1: EHCI Host Controller
-[    1.253359] ci_hdrc ci_hdrc.1: new USB bus registered, assigned bus number 1
-[    1.254466] mmcblk0rpmb: mmc0:0001 HBG4e\x04 2.00 MiB, chardev (243:0)
-[    1.277012] ci_hdrc ci_hdrc.1: USB 2.0 started, EHCI 1.00
-[    1.278070] usb usb1: New USB device found, idVendor=1d6b, idProduct=0002, bcdDevice= 5.17
-[    1.278417] usb usb1: New USB device strings: Mfr=3, Product=2, SerialNumber=1
-[    1.278840] usb usb1: Product: EHCI Host Controller
-[    1.279098] usb usb1: Manufacturer: Linux 5.17.0-next-20220324+ ehci_hcd
-[    1.279500] usb usb1: SerialNumber: ci_hdrc.1
-[    1.280704] hub 1-0:1.0: USB hub found
-[    1.281177] hub 1-0:1.0: 1 port detected
-[    1.304201] ci_hdrc ci_hdrc.2: EHCI Host Controller
-[    1.304569] ci_hdrc ci_hdrc.2: new USB bus registered, assigned bus number 2
-[    1.327144] ci_hdrc ci_hdrc.2: USB 2.0 started, EHCI 1.00
-[    1.335535] usb usb2: New USB device found, idVendor=1d6b, idProduct=0002, bcdDevice= 5.17
-[    1.338924] usb usb2: New USB device strings: Mfr=3, Product=2, SerialNumber=1
-[    1.342392] usb usb2: Product: EHCI Host Controller
-[    1.344507] usb usb2: Manufacturer: Linux 5.17.0-next-20220324+ ehci_hcd
-[    1.348057] usb usb2: SerialNumber: ci_hdrc.2
-[    1.406364] hub 2-0:1.0: USB hub found
-[    1.409290] hub 2-0:1.0: 1 port detected
-[    1.568106] usb 1-1: new high-speed USB device number 2 using ci_hdrc
-[    1.697468] usb 2-1: new high-speed USB device number 2 using ci_hdrc
-[    1.735201] asus-ec 1-0015: model         : ASUS-EC21T-PAD
-[    1.741496] asus-ec 1-0015: FW version    : PAD-EC21T-0309
-[    1.748310] asus-ec 1-0015: Config format : ECFG-0001
-[    1.757444] asus-ec 1-0015: HW version    : EC21T-PAD-SKU1
-[    1.766485] asus-ec 1-0015: EC FW behaviour: susb on when system wakeup
-[    1.779918] usb 1-1: New USB device found, idVendor=0bda, idProduct=8171, bcdDevice= 2.00
-[    1.782056] asusec-battery asusec-battery.1.auto: No monitored battery, some properties will be missing
-[    1.783860] usb 1-1: New USB device strings: Mfr=1, Product=2, SerialNumber=3
-[    1.790355] sdhci-tegra 78000000.mmc: Got CD GPIO
-[    1.790747] sdhci-tegra 78000400.mmc: allocated mmc-pwrseq
-[    1.790869] tegra30-emc 7000f400.memory-controller: 1 DDR3 device attached
-[    1.790989] tegra30-emc 7000f400.memory-controller: got 6 timings for RAM code 3 (min 25MHz max 800MHz)
-[    1.792227] usb 1-1: Product: RTL8188S WLAN Adapter 
-[    1.799674] tegra-dc 54200000.dc: Adding to iommu group 1
-[    1.800462] usb 1-1: Manufacturer: Manufacturer Realtek 
-[    1.811772] tegra-dc 54240000.dc: Adding to iommu group 1
-[    1.814551] usb 1-1: SerialNumber: 00e04c000001
-[    1.823112] mmc2: Invalid maximum block size, assuming 512 bytes
-[    1.826558] mmc1: Invalid maximum block size, assuming 512 bytes
-[    1.831699] checking generic (abe01000 7e9000) vs hw (0 ffffffff)
-[    1.831710] fb0: switching to tegra from simple
-[    1.834478] Console: switching to colour dummy device 80x30
-[    1.864629] mmc1: SDHCI controller on 78000000.mmc [78000000.mmc] using ADMA
-[    1.912460] mmc1: host does not support reading read-only switch, assuming write-enable
-[    1.928901] usb 2-1: New USB device found, idVendor=05e3, idProduct=0610, bcdDevice=32.98
-[    1.928998] usb 2-1: New USB device strings: Mfr=0, Product=1, SerialNumber=0
-[    1.929139] usb 2-1: Product: USB2.0 Hub
-[    1.930191] hub 2-1:1.0: USB hub found
-[    1.930787] hub 2-1:1.0: 4 ports detected
-[    1.941035] mmc1: new ultra high speed SDR104 SDXC card at address aaaa
-[    1.941555] mmcblk1: mmc1:aaaa SR128 119 GiB 
-[    1.943167]  mmcblk1: p1 p2 p3 p4
-[    2.174062] mmc2: SDHCI controller on 78000400.mmc [78000400.mmc] using ADMA
-[    2.254772] Console: switching to colour frame buffer device 240x67
-[    2.266982] vdd_1v8_gen: Restricting voltage, 3300000-1950000uV
-[    2.266992] vdd_1v8_gen: Restricting voltage, 3300000-1950000uV
-[    2.266997] mmc2: Switching to 1.8V signalling voltage failed
-[    2.267021] usb 2-1.1: new full-speed USB device number 3 using ci_hdrc
-[    2.291924] drm drm: [drm] fb0: tegradrmfb frame buffer device
-[    2.293551] [drm] Initialized tegra 99997.0.0 20120330 for drm on minor 0
-[    2.294689] tegra30-tsensor 70014000.tsensor: calibration: 11584 9585 89 23 ATE ver: 38 SoC rev: 3
-[    2.330451] tegra30-tsensor 70014000.tsensor: ch0: CPU freq div2 throttle trip set to 85C
-[    2.334533] tegra30-tsensor 70014000.tsensor: ch0: PMC emergency shutdown trip set to 90C
-[    2.342318] input: gpio-keys as /devices/soc0/gpio-keys/input/input0
-[    2.344063] ALSA device list:
-[    2.344221]   No soundcards found.
-[    2.426754] EXT4-fs (mmcblk1p3): mounted filesystem with ordered data mode. Quota mode: none.
-[    2.428357] VFS: Mounted root (ext4 filesystem) on device 179:51.
-[    2.448948] devtmpfs: mounted
-[    2.450464] Freeing unused kernel image (initmem) memory: 1024K
-[    2.451413] Run /sbin/init as init process
-[    2.451668]   with arguments:
-[    2.451675]     /sbin/init
-[    2.451680]   with environment:
-[    2.451684]     HOME=/
-[    2.451688]     TERM=linux
-[    2.502728] usb 2-1.1: not running at top speed; connect to a high speed hub
-[    2.740903] mmc2: new ultra high speed SDR104 SDIO card at address 0001
-[    2.914813] usb 2-1.1: New USB device found, idVendor=0457, idProduct=0817, bcdDevice= 1.00
-[    2.916816] usb 2-1.1: New USB device strings: Mfr=1, Product=2, SerialNumber=0
-[    2.917837] usb 2-1.1: Product: SiS HID Touch Controller
-[    2.918276] usb 2-1.1: Manufacturer: USBest Technology
-[    3.107037] usb 2-1.2: new high-speed USB device number 4 using ci_hdrc
-[    3.303415] usb 2-1.2: New USB device found, idVendor=04f2, idProduct=b354, bcdDevice=75.71
-[    3.309597] usb 2-1.2: New USB device strings: Mfr=1, Product=2, SerialNumber=0
-[    3.316745] usb 2-1.2: Product: USB2.0 HD UVC WebCam
-[    3.323111] usb 2-1.2: Manufacturer: Chicony
-[    3.437035] usb 2-1.3: new full-speed USB device number 5 using ci_hdrc
-[    3.625281] usb 2-1.3: New USB device found, idVendor=04f2, idProduct=1236, bcdDevice= 1.13
-[    3.654797] usb 2-1.3: New USB device strings: Mfr=1, Product=2, SerialNumber=0
-[    3.660572] usb 2-1.3: Product: USB Receiver
-[    3.665652] usb 2-1.3: Manufacturer: Chicony
-[    5.653617] random: lvm: uninitialized urandom read (4 bytes read)
-[    5.711564] random: lvm: uninitialized urandom read (4 bytes read)
-[   10.811095] udevd[702]: starting version 3.2.11
-[   10.867593] random: udevd: uninitialized urandom read (16 bytes read)
-[   10.869145] random: udevd: uninitialized urandom read (16 bytes read)
-[   10.869224] random: udevd: uninitialized urandom read (16 bytes read)
-[   11.151438] udevd[702]: starting eudev-3.2.11
-[   11.873339] input: USBest Technology SiS HID Touch Controller Touchscreen as /devices/soc0/7d008000.usb/ci_hdrc.2/usb2/2-1/2-1.1/2-1.1:1.0/0003:0457:0817.0001/input/input1
-[   11.873802] hid-generic 0003:0457:0817.0001: input: USB HID v1.00 Device [USBest Technology SiS HID Touch Controller] on usb-ci_hdrc.2-1.1/input0
-[   11.949415] input: Chicony USB Receiver as /devices/soc0/7d008000.usb/ci_hdrc.2/usb2/2-1/2-1.3/2-1.3:1.0/0003:04F2:1236.0002/input/input3
-[   12.017802] hid-generic 0003:04F2:1236.0002: input: USB HID v1.11 Keyboard [Chicony USB Receiver] on usb-ci_hdrc.2-1.3/input0
-[   12.020344] input: Chicony USB Receiver System Control as /devices/soc0/7d008000.usb/ci_hdrc.2/usb2/2-1/2-1.3/2-1.3:1.1/0003:04F2:1236.0003/input/input4
-[   12.086055] tegra30-i2s 70080400.i2s: DMA channels sourced from device 70080000.ahub
-[   12.086625] tegra30-i2s 70080600.i2s: DMA channels sourced from device 70080000.ahub
-[   12.087841] input: Chicony USB Receiver Consumer Control as /devices/soc0/7d008000.usb/ci_hdrc.2/usb2/2-1/2-1.3/2-1.3:1.1/0003:04F2:1236.0003/input/input6
-[   12.088392] hid-generic 0003:04F2:1236.0003: input: USB HID v1.11 Device [Chicony USB Receiver] on usb-ci_hdrc.2-1.3/input1
-[   12.089203] input: Chicony USB Receiver as /devices/soc0/7d008000.usb/ci_hdrc.2/usb2/2-1/2-1.3/2-1.3:1.2/0003:04F2:1236.0004/input/input7
-[   12.090187] hid-generic 0003:04F2:1236.0004: input: USB HID v1.11 Mouse [Chicony USB Receiver] on usb-ci_hdrc.2-1.3/input2
-[   12.090874] hid-generic 0003:04F2:1236.0005: device has no listeners, quitting
-[   12.135888] cfg80211: Loading compiled-in X.509 certificates for regulatory database
-[   12.153522] cfg80211: Loaded X.509 cert 'sforshee: 00b28ddf47aef9cea7'
-[   12.178014] chicony 0003:04F2:1236.0005: : USB HID v1.11 Device [Chicony USB Receiver] on usb-ci_hdrc.2-1.3/input3
-[   12.203882] videodev: Linux video capture interface: v2.00
-[   12.271764] input: Asus Transformer AiO P1801-T RT Headphones Jack as /devices/soc0/sound/sound/card1/input8
-[   12.690435] input: Chicony USB Receiver as /devices/soc0/7d008000.usb/ci_hdrc.2/usb2/2-1/2-1.3/2-1.3:1.0/0003:04F2:1236.0002/input/input9
-[   12.691432] r8712u: module is from the staging directory, the quality is unknown, you have been warned.
-[   12.699881] r8712u: register rtl8712_netdev_ops to netdev_ops
-[   12.699906] usb 1-1: r8712u: USB_SPEED_HIGH with 4 endpoints
-[   12.700668] usb 1-1: r8712u: Boot from EFUSE: Autoload OK
-[   12.775579] chicony 0003:04F2:1236.0002: input: USB HID v1.11 Keyboard [Chicony USB Receiver] on usb-ci_hdrc.2-1.3/input0
-[   12.783650] input: USBest Technology SiS HID Touch Controller as /devices/soc0/7d008000.usb/ci_hdrc.2/usb2/2-1/2-1.1/2-1.1:1.0/0003:0457:0817.0001/input/input10
-[   12.835432] input: tegra-hda HDMI/DP,pcm=3 as /devices/soc0/70030000.hda/sound/card0/input12
-[   12.854857] brcmfmac: F1 signature read @0x18000000=0x16c24324
-[   12.860357] brcmfmac: brcmf_fw_alloc_request: using brcm/brcmfmac43241b0-sdio for chip BCM4324/2
-[   12.860682] usbcore: registered new interface driver brcmfmac
-[   12.877531] hid-multitouch 0003:0457:0817.0001: input: USB HID v1.00 Device [USBest Technology SiS HID Touch Controller] on usb-ci_hdrc.2-1.1/input0
-[   12.929273] input: Chicony USB Receiver as /devices/soc0/7d008000.usb/ci_hdrc.2/usb2/2-1/2-1.3/2-1.3:1.2/0003:04F2:1236.0004/input/input13
-[   12.977187] usb 2-1.2: Found UVC 1.00 device USB2.0 HD UVC WebCam (04f2:b354)
-[   13.009796] input: USB2.0 HD UVC WebCam: USB2.0 HD as /devices/soc0/7d008000.usb/ci_hdrc.2/usb2/2-1/2-1.2/2-1.2:1.0/input/input14
-[   13.073556] random: crng init done
-[   13.073583] random: 5 urandom warning(s) missed due to ratelimiting
-[   13.088059] chicony 0003:04F2:1236.0004: input: USB HID v1.11 Mouse [Chicony USB Receiver] on usb-ci_hdrc.2-1.3/input2
-[   13.090934] input: Chicony USB Receiver System Control as /devices/soc0/7d008000.usb/ci_hdrc.2/usb2/2-1/2-1.3/2-1.3:1.1/0003:04F2:1236.0003/input/input15
-[   13.091418] usbcore: registered new interface driver uvcvideo
-[   13.168164] input: Chicony USB Receiver as /devices/soc0/7d008000.usb/ci_hdrc.2/usb2/2-1/2-1.3/2-1.3:1.1/0003:04F2:1236.0003/input/input16
-[   13.169157] input: Chicony USB Receiver Consumer Control as /devices/soc0/7d008000.usb/ci_hdrc.2/usb2/2-1/2-1.3/2-1.3:1.1/0003:04F2:1236.0003/input/input17
-[   13.169412] chicony 0003:04F2:1236.0003: input: USB HID v1.11 Device [Chicony USB Receiver] on usb-ci_hdrc.2-1.3/input1
-[   13.565131] usb 1-1: r8712u: CustomerID = 0x0000
-[   13.565167] usb 1-1: r8712u: MAC Address from efuse = 00:11:a3:0a:72:5a
-[   13.565195] usb 1-1: r8712u: Loading firmware from "rtlwifi/rtl8712u.bin"
-[   13.566197] usbcore: registered new interface driver r8712u
-[   14.809205] Adding 2097148k swap on /dev/mmcblk1p2.  Priority:-2 extents:1 across:2097148k SS
-[   15.146283] EXT4-fs (mmcblk1p1): mounting ext3 file system using the ext4 subsystem
-[   15.163502] EXT4-fs (mmcblk1p1): mounted filesystem with ordered data mode. Quota mode: none.
-[   22.203911] r8712u 1-1:1.0 wlan0: 1 RCR=0x153f00e
-[   22.205617] r8712u 1-1:1.0 wlan0: 2 RCR=0x553f00e
-[   31.275632] NET: Registered PF_INET6 protocol family
-[   31.277391] Segment Routing with IPv6
-[   31.277420] In-situ OAM (IOAM) with IPv6
-[   37.229837] elogind-daemon[2159]: New seat seat0.
-[   37.238213] elogind-daemon[2159]: Watching system buttons on /dev/input/event1 (Chicony USB Receiver)
-[   37.239137] elogind-daemon[2159]: Watching system buttons on /dev/input/event7 (Chicony USB Receiver System Control)
-[   37.241080] elogind-daemon[2159]: Watching system buttons on /dev/input/event9 (Chicony USB Receiver Consumer Control)
-[   37.241453] elogind-daemon[2159]: Watching system buttons on /dev/input/event0 (gpio-keys)
-[   37.250327] elogind-daemon[2159]: New session c1 of user hedmo.
-[   38.068497] IPv6: ADDRCONF(NETDEV_CHANGE): wlan0: link becomes ready
-[   55.225517] Alignment trap: not handling instruction ecf10b02 at [<b6cba0dc>]
-[   55.225549] 8<--- cut here ---
-[   55.225554] Unhandled fault: alignment exception (0x011) at 0x724456ee
-[   55.225561] [724456ee] *pgd=909e3831, *pte=a911779f, *ppte=a9117e7f
-[   62.778195] elogind-daemon[2159]: New session c2 of user hedmo.
+[    0.000030] clocksource: timer_us: mask: 0xffffffff max_cycles: 0xffffffff, max_idle_ns: 1911260446275 ns
+[    0.000047] Switching to timer-based delay loop, resolution 1000ns
+[    0.000363] clocksource: tegra_suspend_timer: mask: 0xffffffff max_cycles: 0xffffffff, max_idle_ns: 1911260446275000 ns
+[    0.001254] Console: colour dummy device 80x30
+[    0.001663] printk: console [tty0] enabled
+[    0.001727] Calibrating delay loop (skipped), value calculated using timer frequency.. 2.00 BogoMIPS (lpj=10000)
+[    0.001758] pid_max: default: 32768 minimum: 301
+[    0.002018] Mount-cache hash table entries: 2048 (order: 1, 8192 bytes, linear)
+[    0.002052] Mountpoint-cache hash table entries: 2048 (order: 1, 8192 bytes, linear)
+[    0.003002] CPU: Testing write buffer coherency: ok
+[    0.003058] CPU0: Spectre v2: using BPIALL workaround
+[    0.003411] CPU0: thread -1, cpu 0, socket 0, mpidr 80000000
+[    0.004168] Setting up static identity map for 0x80100000 - 0x801000ac
+[    0.004353] rcu: Hierarchical SRCU implementation.
+[    0.005961] Tegra Revision: A03 SKU: 131 CPU Process: 4 SoC Process: 0
+[    0.005987] Tegra CPU Speedo ID 7, SoC Speedo ID 1
+[    0.007519] smp: Bringing up secondary CPUs ...
+[    0.010530] CPU1: thread -1, cpu 1, socket 0, mpidr 80000001
+[    0.010545] CPU1: Spectre v2: using BPIALL workaround
+[    0.020460] CPU2: thread -1, cpu 2, socket 0, mpidr 80000002
+[    0.020474] CPU2: Spectre v2: using BPIALL workaround
+[    0.030432] CPU3: thread -1, cpu 3, socket 0, mpidr 80000003
+[    0.030449] CPU3: Spectre v2: using BPIALL workaround
+[    0.030579] smp: Brought up 1 node, 4 CPUs
+[    0.030604] SMP: Total of 4 processors activated (8.00 BogoMIPS).
+[    0.030623] CPU: All CPU(s) started in SVC mode.
+[    0.031390] devtmpfs: initialized
+[    0.045602] VFP support v0.3: implementor 41 architecture 3 part 30 variant 9 rev 4
+[    0.045880] clocksource: jiffies: mask: 0xffffffff max_cycles: 0xffffffff, max_idle_ns: 19112604462750000 ns
+[    0.045926] futex hash table entries: 1024 (order: 4, 65536 bytes, linear)
+[    0.068121] pinctrl core: initialized pinctrl subsystem
+[    0.069602] NET: Registered PF_NETLINK/PF_ROUTE protocol family
+[    0.073953] DMA: preallocated 256 KiB pool for atomic coherent allocations
+[    0.074975] thermal_sys: Registered thermal governor 'step_wise'
+[    0.075955] cpuidle: using governor menu
+[    0.098320] No ATAGs?
+[    0.098554] hw-breakpoint: found 5 (+1 reserved) breakpoint and 1 watchpoint registers.
+[    0.098583] hw-breakpoint: maximum watchpoint size is 4 bytes.
+[    0.120716] printk: console [ramoops-1] enabled
+[    0.120895] pstore: Registered ramoops as persistent store backend
+[    0.120984] ramoops: using 0x10000@0xfea00000, ecc: 16
+[    0.132670] iommu: Default domain type: Translated 
+[    0.132795] iommu: DMA domain TLB invalidation policy: strict mode 
+[    0.133378] SCSI subsystem initialized
+[    0.133659] libata version 3.00 loaded.
+[    0.133860] usbcore: registered new interface driver usbfs
+[    0.134061] usbcore: registered new interface driver hub
+[    0.134187] usbcore: registered new device driver usb
+[    0.134424] mc: Linux media interface: v0.10
+[    0.134594] pps_core: LinuxPPS API ver. 1 registered
+[    0.134689] pps_core: Software ver. 5.3.6 - Copyright 2005-2007 Rodolfo Giometti <giometti@linux.it>
+[    0.134863] PTP clock support registered
+[    0.135380] Advanced Linux Sound Architecture Driver Initialized.
+[    0.136222] vgaarb: loaded
+[    0.136703] clocksource: Switched to clocksource timer_us
+[    0.178504] VFS: Disk quotas dquot_6.6.0
+[    0.178738] VFS: Dquot-cache hash table entries: 1024 (order 0, 4096 bytes)
+[    0.778401] random: fast init done
+[    0.786079] NET: Registered PF_INET protocol family
+[    0.786457] IP idents hash table entries: 16384 (order: 5, 131072 bytes, linear)
+[    0.787659] tcp_listen_portaddr_hash hash table entries: 512 (order: 0, 6144 bytes, linear)
+[    0.787864] TCP established hash table entries: 8192 (order: 3, 32768 bytes, linear)
+[    0.788087] TCP bind hash table entries: 8192 (order: 4, 65536 bytes, linear)
+[    0.788280] TCP: Hash tables configured (established 8192 bind 8192)
+[    0.788610] UDP hash table entries: 512 (order: 2, 16384 bytes, linear)
+[    0.788785] UDP-Lite hash table entries: 512 (order: 2, 16384 bytes, linear)
+[    0.789164] NET: Registered PF_UNIX/PF_LOCAL protocol family
+[    0.789866] RPC: Registered named UNIX socket transport module.
+[    0.790043] RPC: Registered udp transport module.
+[    0.790133] RPC: Registered tcp transport module.
+[    0.790286] RPC: Registered tcp NFSv4.1 backchannel transport module.
+[    0.790381] PCI: CLS 0 bytes, default 64
+[    0.790852] Unpacking initramfs...
+[    0.807786] hw perfevents: enabled with armv7_cortex_a9 PMU driver, 7 counters available
+[    0.809691] Initialise system trusted keyrings
+[    0.810114] workingset: timestamp_bits=14 max_order=18 bucket_order=4
+[    0.811899] NFS: Registering the id_resolver key type
+[    0.812041] Key type id_resolver registered
+[    0.812135] Key type id_legacy registered
+[    0.813086] Key type cifs.idmap registered
+[    0.813203] fuse: init (API version 7.36)
+[    0.889455] Key type asymmetric registered
+[    0.889635] Asymmetric key parser 'x509' registered
+[    1.028404] Freeing initrd memory: 3388K
+[    1.030560] alg: self-tests for CTR-KDF (hmac(sha256)) passed
+[    1.030843] bounce: pool size: 64 pages
+[    1.031094] Block layer SCSI generic (bsg) driver version 0.4 loaded (major 246)
+[    1.031237] io scheduler mq-deadline registered
+[    1.031398] io scheduler kyber registered
+[    1.031615] io scheduler bfq registered
+[    1.034055] gpio-9 (init-lpm-in-hog): hogged as input
+[    1.034256] gpio-87 (init-lpm-out-hog): hogged as output/low
+[    1.034359] gpio-136 (init-lpm-out-hog): hogged as output/low
+[    1.039740] tegra-apbdma 6000a000.dma: Tegra20 APB DMA driver registered 32 channels
+[    1.041315] Serial: 8250/16550 driver, 4 ports, IRQ sharing disabled
+[    1.044097] 70006040.serial: ttyTHS2 at MMIO 0x70006040 (irq = 77, base_baud = 0) is a TEGRA_UART
+[    1.044682] 70006200.serial: ttyTHS1 at MMIO 0x70006200 (irq = 78, base_baud = 0) is a TEGRA_UART
+[    1.044980] serial serial0: tty port ttyTHS1 registered
+[    1.056850] loop: module loaded
+[    1.058863] CAN device driver interface
+[    1.059973] ehci_hcd: USB 2.0 'Enhanced' Host Controller (EHCI) Driver
+[    1.060100] ehci-pci: EHCI PCI platform driver
+[    1.060599] usbcore: registered new interface driver cdc_acm
+[    1.060699] cdc_acm: USB Abstract Control Model driver for USB modems and ISDN adapters
+[    1.060885] usbcore: registered new interface driver cdc_wdm
+[    1.061176] usbcore: registered new interface driver uas
+[    1.061379] usbcore: registered new interface driver usb-storage
+[    1.061578] usbcore: registered new interface driver usbserial_generic
+[    1.061757] usbserial: USB Serial support registered for generic
+[    1.061881] usbcore: registered new interface driver usb_serial_simple
+[    1.062057] usbserial: USB Serial support registered for carelink
+[    1.062230] usbserial: USB Serial support registered for zio
+[    1.062340] usbserial: USB Serial support registered for funsoft
+[    1.062511] usbserial: USB Serial support registered for flashloader
+[    1.062618] usbserial: USB Serial support registered for google
+[    1.062789] usbserial: USB Serial support registered for libtransistor
+[    1.062896] usbserial: USB Serial support registered for vivopay
+[    1.063067] usbserial: USB Serial support registered for moto_modem
+[    1.063174] usbserial: USB Serial support registered for motorola_tetra
+[    1.063346] usbserial: USB Serial support registered for nokia
+[    1.063452] usbserial: USB Serial support registered for novatel_gps
+[    1.063622] usbserial: USB Serial support registered for hp4x
+[    1.063727] usbserial: USB Serial support registered for suunto
+[    1.063900] usbserial: USB Serial support registered for siemens_mpi
+[    1.065082] UDC core: couldn't find an available UDC - added [g_ether] to list of pending drivers
+[    1.065189] UDC core: couldn't find an available UDC - added [g_multi] to list of pending drivers
+[    1.067034] tegra_rtc 7000e000.rtc: registered as rtc1
+[    1.067215] tegra_rtc 7000e000.rtc: Tegra internal Real Time Clock
+[    1.067558] i2c_dev: i2c /dev entries driver
+[    1.077557] gpio-1017 (pmic-sleep-hog): hogged as output/high
+[    1.106925] tps65910-rtc tps65910-rtc: registered as rtc0
+[    1.109468] tps65910-rtc tps65910-rtc: setting system clock to 2022-04-09T16:32:49 UTC (1649521969)
+[    1.113414] tegra-wdt 60005000.timer: initialized (heartbeat = 120 sec, nowayout = 0)
+[    1.113928] device-mapper: uevent: version 1.0.3
+[    1.114215] device-mapper: ioctl: 4.46.0-ioctl (2022-02-22) initialised: dm-devel@redhat.com
+[    1.114785] sdhci: Secure Digital Host Controller Interface driver
+[    1.114948] sdhci: Copyright(c) Pierre Ossman
+[    1.115037] sdhci-pltfm: SDHCI platform and OF driver helper
+[    1.115743] usbcore: registered new interface driver usbhid
+[    1.115842] usbhid: USB HID core driver
+[    1.119566] NET: Registered PF_PACKET protocol family
+[    1.119796] NET: Registered PF_KEY protocol family
+[    1.119891] can: controller area network core
+[    1.120109] NET: Registered PF_CAN protocol family
+[    1.120205] can: raw protocol
+[    1.120296] can: broadcast manager protocol
+[    1.120457] can: netlink gateway - max_hops=1
+[    1.120674] Key type dns_resolver registered
+[    1.121252] tegra20-cpufreq tegra20-cpufreq: hardware version 0x10 0x80
+[    1.123709] Registering SWP/SWPB emulation handler
+[    1.124344] tegra voltage-coupler: core voltage initialized to 1300000uV
+[    1.124635] registered taskstats version 1
+[    1.124748] Loading compiled-in X.509 certificates
+[    1.125171] mmc0: Invalid maximum block size, assuming 512 bytes
+[    1.125301] Key type ._fscrypt registered
+[    1.125460] Key type .fscrypt registered
+[    1.125545] Key type fscrypt-provisioning registered
+[    1.126201] pstore: Using crash dump compression: deflate
+[    1.149831] simple-framebuffer abe01000.framebuffer: framebuffer at 0xabe01000, 0x7e9000 bytes
+[    1.150089] simple-framebuffer abe01000.framebuffer: format=a8r8g8b8, mode=1920x1080x32, linelength=7680
+[    1.160219] mmc0: SDHCI controller on 78000600.mmc [78000600.mmc] using ADMA
+[    1.165787] Console: switching to colour frame buffer device 240x67
+[    1.177698] simple-framebuffer abe01000.framebuffer: fb0: simplefb registered!
+[    1.178415] tegra-pmc 7000e400.pmc: emergency thermal reset enabled
+[    1.180767] tegra-host1x 50000000.host1x: Adding to iommu group 0
+[    1.182793] tegra-gr2d 54140000.gr2d: Adding to iommu group 1
+[    1.183997] tegra-gr3d 54180000.gr3d: Adding to iommu group 1
+[    1.209168] using random self ethernet address
+[    1.209514] using random host ethernet address
+[    1.210689] usb0: HOST MAC f2:21:6f:0f:45:86
+[    1.211133] usb0: MAC 02:c0:49:5d:22:20
+[    1.211464] using random self ethernet address
+[    1.211757] using random host ethernet address
+[    1.212278] g_ether gadget: Ethernet Gadget, version: Memorial Day 2008
+[    1.212621] g_ether gadget: g_ether ready
+[    1.228436] mmc0: new DDR MMC card at address 0001
+[    1.230105] mmcblk0: mmc0:0001 HBG4e\x04 29.1 GiB 
+[    1.232044] ci_hdrc ci_hdrc.1: EHCI Host Controller
+[    1.232411] ci_hdrc ci_hdrc.1: new USB bus registered, assigned bus number 1
+[    1.234549] mmcblk0boot0: mmc0:0001 HBG4e\x04 2.00 MiB 
+[    1.237685] mmcblk0boot1: mmc0:0001 HBG4e\x04 2.00 MiB 
+[    1.240722] mmcblk0rpmb: mmc0:0001 HBG4e\x04 2.00 MiB, chardev (243:0)
+[    1.266748] ci_hdrc ci_hdrc.1: USB 2.0 started, EHCI 1.00
+[    1.267521] usb usb1: New USB device found, idVendor=1d6b, idProduct=0002, bcdDevice= 5.17
+[    1.267788] usb usb1: New USB device strings: Mfr=3, Product=2, SerialNumber=1
+[    1.268115] usb usb1: Product: EHCI Host Controller
+[    1.268312] usb usb1: Manufacturer: Linux 5.17.0-next-20220324+ ehci_hcd
+[    1.268623] usb usb1: SerialNumber: ci_hdrc.1
+[    1.269573] hub 1-0:1.0: USB hub found
+[    1.269943] hub 1-0:1.0: 1 port detected
+[    1.293094] ci_hdrc ci_hdrc.2: EHCI Host Controller
+[    1.293786] ci_hdrc ci_hdrc.2: new USB bus registered, assigned bus number 2
+[    1.316775] ci_hdrc ci_hdrc.2: USB 2.0 started, EHCI 1.00
+[    1.319332] usb usb2: New USB device found, idVendor=1d6b, idProduct=0002, bcdDevice= 5.17
+[    1.320814] usb usb2: New USB device strings: Mfr=3, Product=2, SerialNumber=1
+[    1.322552] usb usb2: Product: EHCI Host Controller
+[    1.323618] usb usb2: Manufacturer: Linux 5.17.0-next-20220324+ ehci_hcd
+[    1.325266] usb usb2: SerialNumber: ci_hdrc.2
+[    1.355014] hub 2-0:1.0: USB hub found
+[    1.358161] hub 2-0:1.0: 1 port detected
+[    1.556951] usb 1-1: new high-speed USB device number 2 using ci_hdrc
+[    1.646725] usb 2-1: new high-speed USB device number 2 using ci_hdrc
+[    1.662610] asus-ec 1-0015: model         : ASUS-EC21T-PAD
+[    1.669064] asus-ec 1-0015: FW version    : PAD-EC21T-0309
+[    1.685593] asus-ec 1-0015: Config format : ECFG-0001
+[    1.702143] asus-ec 1-0015: HW version    : EC21T-PAD-SKU1
+[    1.710215] asus-ec 1-0015: EC FW behaviour: susb on when system wakeup
+[    1.725579] asusec-battery asusec-battery.1.auto: No monitored battery, some properties will be missing
+[    1.737768] sdhci-tegra 78000000.mmc: Got CD GPIO
+[    1.738578] sdhci-tegra 78000400.mmc: allocated mmc-pwrseq
+[    1.738740] tegra30-emc 7000f400.memory-controller: 1 DDR3 device attached
+[    1.738907] tegra30-emc 7000f400.memory-controller: got 6 timings for RAM code 3 (min 25MHz max 800MHz)
+[    1.750984] tegra-dc 54200000.dc: Adding to iommu group 1
+[    1.757700] mmc1: Invalid maximum block size, assuming 512 bytes
+[    1.761110] mmc2: Invalid maximum block size, assuming 512 bytes
+[    1.765980] tegra-dc 54240000.dc: Adding to iommu group 1
+[    1.781657] checking generic (abe01000 7e9000) vs hw (0 ffffffff)
+[    1.781673] fb0: switching to tegra from simple
+[    1.785764] Console: switching to colour dummy device 80x30
+[    1.795715] mmc1: SDHCI controller on 78000000.mmc [78000000.mmc] using ADMA
+[    1.800479] usb 1-1: New USB device found, idVendor=0bda, idProduct=8171, bcdDevice= 2.00
+[    1.800700] usb 1-1: New USB device strings: Mfr=1, Product=2, SerialNumber=3
+[    1.800899] usb 1-1: Product: RTL8188S WLAN Adapter 
+[    1.801012] usb 1-1: Manufacturer: Manufacturer Realtek 
+[    1.801203] usb 1-1: SerialNumber: 00e04c000001
+[    1.840263] mmc1: host does not support reading read-only switch, assuming write-enable
+[    1.872206] mmc1: new ultra high speed SDR104 SDXC card at address aaaa
+[    1.873901] mmcblk1: mmc1:aaaa SR128 119 GiB 
+[    1.876386]  mmcblk1: p1 p2 p3 p4
+[    1.922083] usb 2-1: New USB device found, idVendor=05e3, idProduct=0610, bcdDevice=32.98
+[    1.922327] usb 2-1: New USB device strings: Mfr=0, Product=1, SerialNumber=0
+[    1.922474] usb 2-1: Product: USB2.0 Hub
+[    1.931582] hub 2-1:1.0: USB hub found
+[    1.932841] hub 2-1:1.0: 4 ports detected
+[    2.106442] Console: switching to colour frame buffer device 240x67
+[    2.112078] mmc2: SDHCI controller on 78000400.mmc [78000400.mmc] using ADMA
+[    2.124064] vdd_1v8_gen: Restricting voltage, 3300000-1950000uV
+[    2.124073] vdd_1v8_gen: Restricting voltage, 3300000-1950000uV
+[    2.124077] mmc2: Switching to 1.8V signalling voltage failed
+[    2.141845] drm drm: [drm] fb0: tegradrmfb frame buffer device
+[    2.143401] [drm] Initialized tegra 99997.0.0 20120330 for drm on minor 0
+[    2.144396] tegra30-tsensor 70014000.tsensor: calibration: 11584 9585 89 23 ATE ver: 38 SoC rev: 3
+[    2.167744] tegra30-tsensor 70014000.tsensor: ch0: CPU freq div2 throttle trip set to 85C
+[    2.168121] tegra30-tsensor 70014000.tsensor: ch0: PMC emergency shutdown trip set to 90C
+[    2.172439] input: gpio-keys as /devices/soc0/gpio-keys/input/input0
+[    2.174322] ALSA device list:
+[    2.174516]   No soundcards found.
+[    2.202602] EXT4-fs (mmcblk1p3): mounted filesystem with ordered data mode. Quota mode: none.
+[    2.203174] VFS: Mounted root (ext4 filesystem) on device 179:51.
+[    2.210639] devtmpfs: mounted
+[    2.213515] Freeing unused kernel image (initmem) memory: 1024K
+[    2.237898] Run /sbin/init as init process
+[    2.239222]   with arguments:
+[    2.239269]     /sbin/init
+[    2.239309]   with environment:
+[    2.239338]     HOME=/
+[    2.239369]     TERM=linux
+[    2.327076] usb 2-1.1: new full-speed USB device number 3 using ci_hdrc
+[    2.560543] usb 2-1.1: not running at top speed; connect to a high speed hub
+[    2.606318] mmc2: new ultra high speed SDR104 SDIO card at address 0001
+[    2.973297] usb 2-1.1: New USB device found, idVendor=0457, idProduct=0817, bcdDevice= 1.00
+[    2.973891] usb 2-1.1: New USB device strings: Mfr=1, Product=2, SerialNumber=0
+[    2.974294] usb 2-1.1: Product: SiS HID Touch Controller
+[    2.983428] usb 2-1.1: Manufacturer: USBest Technology
+[    3.156806] usb 2-1.2: new high-speed USB device number 4 using ci_hdrc
+[    3.362525] usb 2-1.2: New USB device found, idVendor=04f2, idProduct=b354, bcdDevice=75.71
+[    3.372499] usb 2-1.2: New USB device strings: Mfr=1, Product=2, SerialNumber=0
+[    3.379838] usb 2-1.2: Product: USB2.0 HD UVC WebCam
+[    3.386616] usb 2-1.2: Manufacturer: Chicony
+[    3.496987] usb 2-1.3: new full-speed USB device number 5 using ci_hdrc
+[    3.662162] usb 2-1.3: New USB device found, idVendor=04f2, idProduct=1236, bcdDevice= 1.13
+[    3.670186] usb 2-1.3: New USB device strings: Mfr=1, Product=2, SerialNumber=0
+[    3.679229] usb 2-1.3: Product: USB Receiver
+[    3.688438] usb 2-1.3: Manufacturer: Chicony
+[    4.799514] random: lvm: uninitialized urandom read (4 bytes read)
+[    4.858172] random: lvm: uninitialized urandom read (4 bytes read)
+[    9.867253] udevd[708]: starting version 3.2.11
+[    9.925291] random: udevd: uninitialized urandom read (16 bytes read)
+[    9.927523] random: udevd: uninitialized urandom read (16 bytes read)
+[    9.927604] random: udevd: uninitialized urandom read (16 bytes read)
+[   10.204072] udevd[708]: starting eudev-3.2.11
+[   10.636590] videodev: Linux video capture interface: v2.00
+[   11.096667] Bluetooth: Core ver 2.22
+[   11.097112] NET: Registered PF_BLUETOOTH protocol family
+[   11.097140] Bluetooth: HCI device and connection manager initialized
+[   11.097179] Bluetooth: HCI socket layer initialized
+[   11.097193] Bluetooth: L2CAP socket layer initialized
+[   11.097252] Bluetooth: SCO socket layer initialized
+[   11.131721] tegra30-i2s 70080400.i2s: DMA channels sourced from device 70080000.ahub
+[   11.132601] tegra30-i2s 70080600.i2s: DMA channels sourced from device 70080000.ahub
+[   11.189199] input: USBest Technology SiS HID Touch Controller Touchscreen as /devices/soc0/7d008000.usb/ci_hdrc.2/usb2/2-1/2-1.1/2-1.1:1.0/0003:0457:0817.0001/input/input2
+[   11.189807] hid-generic 0003:0457:0817.0001: input: USB HID v1.00 Device [USBest Technology SiS HID Touch Controller] on usb-ci_hdrc.2-1.1/input0
+[   11.267690] input: Chicony USB Receiver as /devices/soc0/7d008000.usb/ci_hdrc.2/usb2/2-1/2-1.3/2-1.3:1.0/0003:04F2:1236.0002/input/input4
+[   11.280275] input: Asus Transformer AiO P1801-T RT Headphones Jack as /devices/soc0/sound/sound/card0/input1
+[   11.333902] Bluetooth: HCI UART driver ver 2.3
+[   11.333959] Bluetooth: HCI UART protocol H4 registered
+[   11.334440] Bluetooth: HCI UART protocol Broadcom registered
+[   11.341645] hid-generic 0003:04F2:1236.0002: input: USB HID v1.11 Keyboard [Chicony USB Receiver] on usb-ci_hdrc.2-1.3/input0
+[   11.347150] input: Chicony USB Receiver System Control as /devices/soc0/7d008000.usb/ci_hdrc.2/usb2/2-1/2-1.3/2-1.3:1.1/0003:04F2:1236.0003/input/input5
+[   11.417820] input: Chicony USB Receiver Consumer Control as /devices/soc0/7d008000.usb/ci_hdrc.2/usb2/2-1/2-1.3/2-1.3:1.1/0003:04F2:1236.0003/input/input7
+[   11.418238] hid-generic 0003:04F2:1236.0003: input: USB HID v1.11 Device [Chicony USB Receiver] on usb-ci_hdrc.2-1.3/input1
+[   11.419740] input: Chicony USB Receiver as /devices/soc0/7d008000.usb/ci_hdrc.2/usb2/2-1/2-1.3/2-1.3:1.2/0003:04F2:1236.0004/input/input8
+[   11.420272] hid-generic 0003:04F2:1236.0004: input: USB HID v1.11 Mouse [Chicony USB Receiver] on usb-ci_hdrc.2-1.3/input2
+[   11.421576] hid-generic 0003:04F2:1236.0005: device has no listeners, quitting
+[   11.491449] usb 2-1.2: Found UVC 1.00 device USB2.0 HD UVC WebCam (04f2:b354)
+[   11.548830] input: USB2.0 HD UVC WebCam: USB2.0 HD as /devices/soc0/7d008000.usb/ci_hdrc.2/usb2/2-1/2-1.2/2-1.2:1.0/input/input9
+[   11.549620] usbcore: registered new interface driver uvcvideo
+[   11.552095] cfg80211: Loading compiled-in X.509 certificates for regulatory database
+[   11.573645] cfg80211: Loaded X.509 cert 'sforshee: 00b28ddf47aef9cea7'
+[   11.683918] chicony 0003:04F2:1236.0005: : USB HID v1.11 Device [Chicony USB Receiver] on usb-ci_hdrc.2-1.3/input3
+[   11.814253] tegra-vde 6001a000.vde: Adding to iommu group 2
+[   11.818357] Bluetooth: hci0: BCM: chip id 72
+[   11.827488] Bluetooth: hci0: BCM: features 0x0f
+[   11.828776] Bluetooth: hci0: "BCM43241B0
+[   11.828795] Bluetooth: hci0: BCM4334B0 (002.001.013) build 0000
+[   11.888625] tegra-vde 6001a000.vde: v4l2 device registered as /dev/video2
+[   11.888778] tegra voltage-coupler: voltage state synced
+[   12.041523] Bluetooth: hci0: BCM4334B0 'brcm/BCM4334B0.hcd' Patch
+[   12.064937] r8712u: module is from the staging directory, the quality is unknown, you have been warned.
+[   12.074081] r8712u: register rtl8712_netdev_ops to netdev_ops
+[   12.074105] usb 1-1: r8712u: USB_SPEED_HIGH with 4 endpoints
+[   12.074978] usb 1-1: r8712u: Boot from EFUSE: Autoload OK
+[   12.142814] input: Chicony USB Receiver as /devices/soc0/7d008000.usb/ci_hdrc.2/usb2/2-1/2-1.3/2-1.3:1.0/0003:04F2:1236.0002/input/input10
+[   12.185971] input: tegra-hda HDMI/DP,pcm=3 as /devices/soc0/70030000.hda/sound/card1/input11
+[   12.196792] brcmfmac: F1 signature read @0x18000000=0x16c24324
+[   12.202238] brcmfmac: brcmf_fw_alloc_request: using brcm/brcmfmac43241b0-sdio for chip BCM4324/2
+[   12.202631] usbcore: registered new interface driver brcmfmac
+[   12.217353] chicony 0003:04F2:1236.0002: input: USB HID v1.11 Keyboard [Chicony USB Receiver] on usb-ci_hdrc.2-1.3/input0
+[   12.239072] input: USBest Technology SiS HID Touch Controller as /devices/soc0/7d008000.usb/ci_hdrc.2/usb2/2-1/2-1.1/2-1.1:1.0/0003:0457:0817.0001/input/input12
+[   12.357265] hid-multitouch 0003:0457:0817.0001: input: USB HID v1.00 Device [USBest Technology SiS HID Touch Controller] on usb-ci_hdrc.2-1.1/input0
+[   12.462203] random: crng init done
+[   12.462255] random: 5 urandom warning(s) missed due to ratelimiting
+[   12.521708] input: Chicony USB Receiver System Control as /devices/soc0/7d008000.usb/ci_hdrc.2/usb2/2-1/2-1.3/2-1.3:1.1/0003:04F2:1236.0003/input/input14
+[   12.578881] input: Chicony USB Receiver as /devices/soc0/7d008000.usb/ci_hdrc.2/usb2/2-1/2-1.3/2-1.3:1.2/0003:04F2:1236.0004/input/input17
+[   12.647418] input: Chicony USB Receiver as /devices/soc0/7d008000.usb/ci_hdrc.2/usb2/2-1/2-1.3/2-1.3:1.1/0003:04F2:1236.0003/input/input15
+[   12.648105] chicony 0003:04F2:1236.0004: input: USB HID v1.11 Mouse [Chicony USB Receiver] on usb-ci_hdrc.2-1.3/input2
+[   12.649225] Bluetooth: hci0: AzureWave AH691 BCM43241B0 0056 37.4MHz BT4.0 Class 1 iLNA
+[   12.649261] Bluetooth: hci0: BCM4334B0 (002.001.013) build 0081
+[   12.652291] input: Chicony USB Receiver Consumer Control as /devices/soc0/7d008000.usb/ci_hdrc.2/usb2/2-1/2-1.3/2-1.3:1.1/0003:04F2:1236.0003/input/input16
+[   12.653247] chicony 0003:04F2:1236.0003: input: USB HID v1.11 Device [Chicony USB Receiver] on usb-ci_hdrc.2-1.3/input1
+[   12.879625] usb 1-1: r8712u: CustomerID = 0x0000
+[   12.879674] usb 1-1: r8712u: MAC Address from efuse = 00:11:a3:0a:72:5a
+[   12.879701] usb 1-1: r8712u: Loading firmware from "rtlwifi/rtl8712u.bin"
+[   12.880698] usbcore: registered new interface driver r8712u
+[   14.081614] Adding 2097148k swap on /dev/mmcblk1p2.  Priority:-2 extents:1 across:2097148k SS
+[   14.418880] EXT4-fs (mmcblk1p1): mounting ext3 file system using the ext4 subsystem
+[   14.433153] EXT4-fs (mmcblk1p1): mounted filesystem with ordered data mode. Quota mode: none.
+[   21.740731] r8712u 1-1:1.0 wlan0: 1 RCR=0x153f00e
+[   21.746220] r8712u 1-1:1.0 wlan0: 2 RCR=0x553f00e
+[   30.845574] NET: Registered PF_INET6 protocol family
+[   30.847055] Segment Routing with IPv6
+[   30.847086] In-situ OAM (IOAM) with IPv6
+[   36.937302] elogind-daemon[2166]: New seat seat0.
+[   36.945498] elogind-daemon[2166]: Watching system buttons on /dev/input/event1 (Chicony USB Receiver)
+[   36.946412] elogind-daemon[2166]: Watching system buttons on /dev/input/event5 (Chicony USB Receiver System Control)
+[   36.948437] elogind-daemon[2166]: Watching system buttons on /dev/input/event9 (Chicony USB Receiver Consumer Control)
+[   36.949048] elogind-daemon[2166]: Watching system buttons on /dev/input/event0 (gpio-keys)
+[   36.960632] elogind-daemon[2166]: New session c1 of user hedmo.
+[   37.640884] IPv6: ADDRCONF(NETDEV_CHANGE): wlan0: link becomes ready
+[   55.796936] Alignment trap: not handling instruction ecf10b02 at [<b6d2e0dc>]
+[   55.797000] 8<--- cut here ---
+[   55.797007] Unhandled fault: alignment exception (0x011) at 0x724c66ee
+[   55.797022] [724c66ee] *pgd=bf2e5831
+[  127.892707] tegra-i2c 7000c400.i2c: I2C transfer timed out
 
 ==== top ====
 
-top - 17:48:51 up 6 min,  8 users,  load average: 0.32, 0.42, 0.25
-Tasks: 168 total,   1 running, 165 sleeping,   1 stopped,   1 zombie
-%Cpu(s):  6.3 us,  8.9 sy,  0.0 ni, 84.8 id,  0.0 wa,  0.0 hi,  0.0 si,  0.0 st
-MiB Mem :    986.5 total,    251.8 free,    206.7 used,    528.0 buff/cache
-MiB Swap:   2048.0 total,   2048.0 free,      0.0 used.    702.4 avail Mem 
+top - 18:35:06 up 2 min,  7 users,  load average: 0.92, 0.58, 0.23
+Tasks: 195 total,   1 running, 194 sleeping,   0 stopped,   0 zombie
+%Cpu(s):  6.3 us,  0.0 sy,  0.0 ni, 93.7 id,  0.0 wa,  0.0 hi,  0.0 si,  0.0 st
+MiB Mem :    986.5 total,    240.1 free,    206.9 used,    539.6 buff/cache
+MiB Swap:   2048.0 total,   2048.0 free,      0.0 used.    700.0 avail Mem 
 
   PID USER      PR  NI    VIRT    RES    SHR S  %CPU  %MEM     TIME+ COMMAND
- 2514 hedmo     20   0  108384  12204   9564 S  41.2   1.2   0:37.58 conky
- 3173 root      20   0    8552   2264   2080 R  11.8   0.2   0:00.05 top
-    1 root      20   0    1996   1364   1276 S   0.0   0.1   0:00.44 init
-    2 root      20   0       0      0      0 S   0.0   0.0   0:00.02 kthreadd
+ 2861 root      20   0    8552   2208   2024 R  17.6   0.2   0:00.05 top
+   66 root      20   0       0      0      0 I   5.9   0.0   0:01.18 kworker/0:4+
+    1 root      20   0    1996   1380   1292 S   0.0   0.1   0:00.43 init
+    2 root      20   0       0      0      0 S   0.0   0.0   0:00.01 kthreadd
     3 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 rcu_gp
     4 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 rcu_par_gp
     5 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 netns
-    6 root      20   0       0      0      0 I   0.0   0.0   0:00.00 kworker/0:0-pm
-    7 root       0 -20       0      0      0 I   0.0   0.0   0:00.14 kworker/0:0H-events_highpri
-    8 root      20   0       0      0      0 I   0.0   0.0   0:01.56 kworker/u8:0-events_unbound
+    6 root      20   0       0      0      0 I   0.0   0.0   0:00.00 kworker/0:0+
+    7 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 kworker/0:0+
+    8 root      20   0       0      0      0 I   0.0   0.0   0:01.33 kworker/u8:+
     9 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 mm_percpu_wq
-   10 root      20   0       0      0      0 S   0.0   0.0   0:00.20 ksoftirqd/0
-   11 root      20   0       0      0      0 I   0.0   0.0   0:00.95 rcu_sched
-   12 root      rt   0       0      0      0 S   0.0   0.0   0:00.61 migration/0
+   10 root      20   0       0      0      0 S   0.0   0.0   0:00.09 ksoftirqd/0
+   11 root      20   0       0      0      0 I   0.0   0.0   0:00.35 rcu_sched
+   12 root      rt   0       0      0      0 S   0.0   0.0   0:00.60 migration/0
    13 root      20   0       0      0      0 S   0.0   0.0   0:00.00 cpuhp/0
    14 root      20   0       0      0      0 S   0.0   0.0   0:00.00 cpuhp/1
-   15 root      rt   0       0      0      0 S   0.0   0.0   0:00.60 migration/1
-   16 root      20   0       0      0      0 S   0.0   0.0   0:00.06 ksoftirqd/1
+   15 root      rt   0       0      0      0 S   0.0   0.0   0:00.00 migration/1
+   16 root      20   0       0      0      0 S   0.0   0.0   0:00.02 ksoftirqd/1
+   17 root      20   0       0      0      0 I   0.0   0.0   0:00.00 kworker/1:0+
+   18 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 kworker/1:0+
    19 root      20   0       0      0      0 S   0.0   0.0   0:00.00 cpuhp/2
-   20 root      rt   0       0      0      0 S   0.0   0.0   0:00.01 migration/2
-   21 root      20   0       0      0      0 S   0.0   0.0   0:00.06 ksoftirqd/2
-   22 root      20   0       0      0      0 I   0.0   0.0   0:00.01 kworker/2:0-events
+   20 root      rt   0       0      0      0 S   0.0   0.0   0:00.60 migration/2
+   21 root      20   0       0      0      0 S   0.0   0.0   0:00.02 ksoftirqd/2
+   22 root      20   0       0      0      0 I   0.0   0.0   0:00.58 kworker/2:0+
+   23 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 kworker/2:0+
    24 root      20   0       0      0      0 S   0.0   0.0   0:00.00 cpuhp/3
    25 root      rt   0       0      0      0 S   0.0   0.0   0:00.60 migration/3
-   26 root      20   0       0      0      0 S   0.0   0.0   0:00.05 ksoftirqd/3
+   26 root      20   0       0      0      0 S   0.0   0.0   0:00.02 ksoftirqd/3
+   27 root      20   0       0      0      0 I   0.0   0.0   0:00.00 kworker/3:0+
+   28 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 kworker/3:0+
    29 root      20   0       0      0      0 S   0.0   0.0   0:00.01 kdevtmpfs
    30 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 inet_frag_wq
-   31 root      20   0       0      0      0 I   0.0   0.0   0:00.36 kworker/0:1-events_power_efficient
-   32 root      20   0       0      0      0 I   0.0   0.0   0:01.00 kworker/2:1-events
-   33 root      20   0       0      0      0 I   0.0   0.0   0:01.18 kworker/1:1-pm
+   31 root      20   0       0      0      0 I   0.0   0.0   0:00.00 kworker/2:1+
+   32 root      20   0       0      0      0 I   0.0   0.0   0:00.00 kworker/0:1+
+   33 root      20   0       0      0      0 I   0.0   0.0   0:00.02 kworker/1:1+
    34 root      20   0       0      0      0 S   0.0   0.0   0:00.00 khungtaskd
    35 root      20   0       0      0      0 S   0.0   0.0   0:00.00 oom_reaper
    36 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 writeback
-   37 root      20   0       0      0      0 S   0.0   0.0   0:00.32 kcompactd0
+   37 root      20   0       0      0      0 S   0.0   0.0   0:00.18 kcompactd0
    38 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 kblockd
-   39 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 blkcg_punt_bio
+   39 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 blkcg_punt_+
    40 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 ata_sff
    41 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 devfreq_wq
    42 root     -51   0       0      0      0 S   0.0   0.0   0:00.00 watchdogd
-   43 root      20   0       0      0      0 I   0.0   0.0   0:00.09 kworker/u8:1-events_unbound
-   44 root       0 -20       0      0      0 I   0.0   0.0   0:02.30 kworker/0:1H-events_highpri
-   45 root       0 -20       0      0      0 I   0.0   0.0   0:00.99 kworker/3:1H-kblockd
-   46 root       0 -20       0      0      0 I   0.0   0.0   0:00.14 kworker/2:1H-events_highpri
-   47 root       0 -20       0      0      0 I   0.0   0.0   0:00.15 kworker/1:1H-events_highpri
+   43 root      20   0       0      0      0 I   0.0   0.0   0:00.10 kworker/u8:+
+   44 root       0 -20       0      0      0 I   0.0   0.0   0:02.72 kworker/0:1+
+   45 root       0 -20       0      0      0 I   0.0   0.0   0:00.78 kworker/1:1+
+   46 root       0 -20       0      0      0 I   0.0   0.0   0:01.14 kworker/2:1+
+   47 root       0 -20       0      0      0 I   0.0   0.0   0:00.11 kworker/3:1+
    48 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 rpciod
    49 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 xprtiod
-   50 root      20   0       0      0      0 S   0.0   0.0   0:00.08 kswapd0
+   50 root      20   0       0      0      0 S   0.0   0.0   0:00.05 kswapd0
    51 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 nfsiod
-   52 root      20   0       0      0      0 I   0.0   0.0   0:00.64 kworker/3:1-events
-   53 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 cifsiod
-   54 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 smb3decryptd
-   55 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 cifsfileinfoput
-   56 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 cifsoplockd
-   57 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 deferredclose
-   65 root      20   0       0      0      0 I   0.0   0.0   0:00.90 kworker/3:2-events
+   52 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 cifsiod
+   53 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 smb3decryptd
+   54 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 cifsfileinf+
+   55 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 cifsoplockd
+   56 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 deferredclo+
+   57 root      20   0       0      0      0 I   0.0   0.0   0:00.00 kworker/u8:2
+   64 root      20   0       0      0      0 I   0.0   0.0   0:00.16 kworker/0:2+
+   65 root      20   0       0      0      0 I   0.0   0.0   0:00.00 kworker/0:3+
+   67 root      20   0       0      0      0 I   0.0   0.0   0:00.00 kworker/2:2+
    68 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 uas
-   69 root     -51   0       0      0      0 S   0.0   0.0   0:00.00 irq/80-7000c000.i2c
-   70 root     -51   0       0      0      0 S   0.0   0.0   0:00.07 irq/81-7000c400.i2c
-   71 root     -51   0       0      0      0 S   0.0   0.0   0:00.56 irq/82-7000c500.i2c
-   72 root      20   0       0      0      0 I   0.0   0.0   0:01.90 kworker/0:2-pm
-   73 root     -51   0       0      0      0 S   0.0   0.0   0:00.00 irq/83-7000c700.i2c
-   74 root     -51   0       0      0      0 S   0.0   0.0   0:00.11 irq/84-7000d000.i2c
-   75 root     -51   0       0      0      0 S   0.0   0.0   0:00.00 irq/101-tps65910
-   76 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 kworker/u9:0
-   77 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 sdhci
-   78 root     -51   0       0      0      0 S   0.0   0.0   0:00.00 irq/92-mmc0
-  141 root      20   0       0      0      0 I   0.0   0.0   0:00.12 kworker/u8:3-events_unbound
-  142 root     -51   0       0      0      0 S   0.0   0.0   0:00.00 irq/130-hpd
-  143 root      20   0       0      0      0 I   0.0   0.0   0:00.87 kworker/1:2-mm_percpu_wq
-  149 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 ci_otg
-  150 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 mmc_complete
-  151 root      20   0       0      0      0 I   0.0   0.0   0:02.99 kworker/2:2-mm_percpu_wq
-  152 root     -51   0       0      0      0 S   0.0   0.0   0:00.00 irq/100-pad-ec
-  153 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 sdhci
-  154 root     -51   0       0      0      0 S   0.0   0.0   0:00.00 irq/91-mmc2
+   69 root     -51   0       0      0      0 S   0.0   0.0   0:00.00 irq/80-7000+
+   70 root      20   0       0      0      0 I   0.0   0.0   0:00.00 kworker/3:1+
+   71 root     -51   0       0      0      0 S   0.0   0.0   0:00.01 irq/81-7000+
+   72 root     -51   0       0      0      0 S   0.0   0.0   0:00.09 irq/82-7000+
+   73 root     -51   0       0      0      0 S   0.0   0.0   0:00.00 irq/83-7000+
+   74 root     -51   0       0      0      0 S   0.0   0.0   0:00.17 irq/84-7000+
+   75 root     -51   0       0      0      0 S   0.0   0.0   0:00.00 irq/101-tps+
+   76 root      20   0       0      0      0 I   0.0   0.0   0:00.35 kworker/3:2+
+   77 root      20   0       0      0      0 I   0.0   0.0   0:00.00 kworker/3:3+
+   78 root      20   0       0      0      0 I   0.0   0.0   0:00.00 kworker/3:4+
+   79 root       0 -20       0      0      0 I   0.0   0.0   0:00.01 kworker/u9:+
+   80 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 sdhci
+   81 root     -51   0       0      0      0 S   0.0   0.0   0:00.00 irq/92-mmc0
+  144 root      20   0       0      0      0 I   0.0   0.0   0:00.03 kworker/u8:+
+  145 root      20   0       0      0      0 I   0.0   0.0   0:00.00 kworker/1:2+
+  146 root     -51   0       0      0      0 S   0.0   0.0   0:00.00 irq/130-hpd
+  147 root      20   0       0      0      0 I   0.0   0.0   0:00.00 kworker/2:3+
+  148 root      20   0       0      0      0 I   0.0   0.0   0:00.00 kworker/2:4+
+  149 root      20   0       0      0      0 I   0.0   0.0   0:00.43 kworker/2:5+
+  150 root      20   0       0      0      0 I   0.0   0.0   0:00.00 kworker/2:6+
+  151 root      20   0       0      0      0 I   0.0   0.0   0:00.00 kworker/2:7
+  152 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 ci_otg
+  153 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 mmc_complete
+  154 root     -51   0       0      0      0 S   0.0   0.0   0:00.00 irq/100-pad+
   155 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 sdhci
   156 root     -51   0       0      0      0 S   0.0   0.0   0:00.00 irq/90-mmc1
-  157 root      -2   0       0      0      0 P   0.0   0.0   0:00.91 2d channel
-  158 root      -2   0       0      0      0 P   0.0   0.0   0:01.98 3d channel
-  159 root     -51   0       0      0      0 S   0.0   0.0   0:00.00 card0-crtc0
-  160 root     -51   0       0      0      0 S   0.0   0.0   0:00.00 card0-crtc1
-  161 root     -51   0       0      0      0 S   0.0   0.0   0:00.00 irq/131-78000000.mmc cd
-  162 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 mmc_complete
-  165 root     -51   0       0      0      0 S   0.0   0.0   0:00.00 irq/87-tegra_tsensor
-  166 root     -51   0       0      0      0 S   0.0   0.0   0:00.08 irq/65-tegra-devfreq
-  167 root      20   0       0      0      0 S   0.0   0.0   0:00.12 jbd2/mmcblk1p3-8
-  168 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 ext4-rsv-conver
-  170 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 kworker/3:2H-events_highpri
-  171 root       0 -20       0      0      0 I   0.0   0.0   0:00.94 kworker/2:2H-events_highpri
-  175 root       0 -20       0      0      0 I   0.0   0.0   0:01.90 kworker/1:2H-events_highpri
-  702 root      20   0   13132   2672   2112 S   0.0   0.3   0:00.68 udevd
-  772 root     -51   0       0      0      0 S   0.0   0.0   0:00.00 irq/136-kxcjk1013_event
-  774 root     -51   0       0      0      0 S   0.0   0.0   0:00.00 irq/137-lm90
-  834 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 cfg80211
- 1053 root      20   0       0      0      0 S   0.0   0.0   0:00.00 jbd2/mmcblk1p1-8
- 1054 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 ext4-rsv-conver
- 1187 root      20   0       0      0      0 I   0.0   0.0   0:01.98 kworker/0:3-mm_percpu_wq
- 1568 message+  20   0    4528   2976   2148 S   0.0   0.3   0:01.62 dbus-daemon
- 1598 root      20   0   46480  12268  10852 S   0.0   1.2   0:01.27 NetworkManager
- 1627 root      20   0       0      0      0 S   0.0   0.0   0:00.47 wlan0
- 1629 root      20   0    7300   5960   5560 S   0.0   0.6   0:00.10 wpa_supplicant
- 1636 root      20   0   54992   8636   7452 S   0.0   0.9   0:00.26 ModemManager
- 1668 polkitd   20   0   37684   7232   5656 S   0.0   0.7   0:01.11 polkitd
- 1924 root      20   0   10004   5196   3896 S   0.0   0.5   0:00.14 cupsd
- 1997 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 mld
- 1998 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 ipv6_addrconf
- 2024 root      20   0   64208  12176  11424 S   0.0   1.2   0:00.16 sddm
- 2054 root      20   0   35456   5080   4484 S   0.0   0.5   0:03.50 iio-sensor-prox
- 2087 root      20   0  213176  68148  55780 S   0.0   6.7   0:14.70 X
- 2091 root      20   0    5608   2364   1988 S   0.0   0.2   0:00.00 sshd
- 2142 root      20   0    4064    652    600 S   0.0   0.1   0:00.01 agetty
- 2143 root      20   0    4064    676    624 S   0.0   0.1   0:00.01 agetty
- 2144 root      20   0    4064    648    596 S   0.0   0.1   0:00.01 agetty
- 2145 root      20   0    4064    656    604 S   0.0   0.1   0:00.01 agetty
- 2146 root      20   0    4064    660    608 S   0.0   0.1   0:00.01 agetty
- 2147 root      20   0    4064    652    600 S   0.0   0.1   0:00.01 agetty
- 2154 root      20   0   53268  12616  11712 S   0.0   1.2   0:00.43 sddm-helper
- 2159 root      20   0   36844   3256   2984 S   0.0   0.3   0:00.12 elogind-daemon
- 2174 hedmo     20   0  108760  27956  25320 S   0.0   2.8   0:00.96 startplasma-x11
- 2180 hedmo     20   0    4204   1932   1704 S   0.0   0.2   0:00.00 dbus-launch
- 2181 hedmo     20   0    4204   2640   2176 S   0.0   0.3   0:01.31 dbus-daemon
- 2193 hedmo     20   0  113188  27728  25368 S   0.0   2.7   0:00.51 plasma_session
- 2198 hedmo     20   0    1936     68      0 S   0.0   0.0   0:00.00 start_kdeinit
- 2199 hedmo     20   0  100396  20832  18404 S   0.0   2.1   0:00.33 kdeinit5
- 2227 hedmo     20   0  136128  31080  28184 S   0.0   3.1   0:00.89 klauncher
- 2377 hedmo     20   0  237188  54912  47528 S   0.0   5.4   0:03.25 kded5
- 2383 hedmo     20   0  385364  98660  81684 S   0.0   9.8   0:04.26 kwin_x11
- 2389 hedmo     20   0  138668  27820  24948 S   0.0   2.8   0:00.44 kactivitymanage
- 2392 hedmo     20   0   25448   4028   3776 S   0.0   0.4   0:00.03 dconf-service
- 2400 hedmo     20   0    6060   1716   1548 S   0.0   0.2   0:00.02 xsettingsd
- 2407 hedmo     20   0  137384  32676  28464 S   0.0   3.2   0:01.41 kglobalaccel5
- 2437 hedmo     20   0  140764  36000  32304 S   0.0   3.6   0:01.10 ksmserver
- 2439 root      20   0   63188   8952   7816 S   0.0   0.9   0:00.81 udisksd
- 2458 root      20   0   35748   5372   4856 S   0.0   0.5   0:00.25 upowerd
- 2464 hedmo     20   0   86348  15596  14020 S   0.0   1.5   0:00.25 xembedsniproxy
- 2465 hedmo     20   0  158712  34752  31416 S   0.0   3.4   0:00.87 polkit-kde-auth
- 2467 hedmo     20   0  140372  33596  30324 S   0.0   3.3   0:00.86 kaccess
- 2468 hedmo     20   0  147400  35472  32268 S   0.0   3.5   0:00.97 org_kde_powerde
- 2469 hedmo     39  19 1136288  17256  15580 T   0.0   1.7   0:00.58 baloo_file
- 2471 hedmo     20   0  758460 166492 120696 S   0.0  16.5   0:14.67 plasmashell
- 2477 hedmo     20   0   87292  16528  14956 S   0.0   1.6   0:00.22 gmenudbusmenupr
- 2487 hedmo     20   0  366784   9748   6796 S   0.0   1.0   0:00.39 pulseaudio
- 2491 hedmo     20   0  307160  96092  80792 S   0.0   9.5   0:05.79 konsole
- 2515 hedmo     20   0   38596   5028   4600 S   0.0   0.5   0:00.05 gsettings-helpe
- 2520 hedmo     20   0   40344   2960   2640 S   0.0   0.3   0:00.03 obexd
- 2523 hedmo     20   0   86180  16260  14664 S   0.0   1.6   0:00.24 kscreen_backend
- 2605 hedmo     20   0   40308   4932   4600 S   0.0   0.5   0:00.04 agent
- 2606 hedmo     20   0    3776   1716   1580 S   0.0   0.2   0:00.00 xbindkeys
- 2740 hedmo     39  19       0      0      0 Z   0.0   0.0   0:00.08 baloo_file
- 2741 hedmo     39  19  141828  35572  32140 S   0.0   3.5   0:00.83 drkonqi
- 2746 hedmo     20   0    8340   3524   3152 S   0.0   0.3   0:00.07 bash
- 2749 hedmo     20   0    8340   3504   3216 S   0.0   0.3   0:00.03 bash
- 2755 hedmo     20   0    8340   3440   3152 S   0.0   0.3   0:00.05 bash
- 2761 hedmo     20   0    8340   3504   3216 S   0.0   0.3   0:00.05 bash
- 2769 hedmo     20   0    8340   3440   3152 S   0.0   0.3   0:00.03 bash
- 2779 root      20   0    7928   5652   5040 S   0.0   0.6   0:00.07 sshd
- 2785 hedmo     20   0    8484   4744   3548 S   0.0   0.5   0:00.83 sshd
- 2786 hedmo     20   0    8444   3548   3160 S   0.0   0.4   0:00.38 bash
- 2806 hedmo     20   0   72216  13732  12716 S   0.0   1.4   0:00.09 kioslave5
- 3082 root      20   0       0      0      0 I   0.0   0.0   0:00.37 kworker/0:4-events
- 3085 root      20   0       0      0      0 I   0.0   0.0   0:00.34 kworker/1:0-pm
- 3087 root      20   0       0      0      0 I   0.0   0.0   0:00.20 kworker/2:3-events
- 3088 root      20   0       0      0      0 I   0.0   0.0   0:00.31 kworker/3:0-events
- 3126 root       0 -20       0      0      0 I   0.0   0.0   0:00.03 kworker/0:2H-mmc_complete
- 3163 root      20   0   11160   3908   3552 S   0.0   0.4   0:00.03 sudo
- 3164 root      20   0    8028   2476   2280 S   0.0   0.2   0:00.01 su
- 3165 root      20   0    8328   3344   3068 S   0.0   0.3   0:00.03 bash
- 3167 root      20   0    8212   3140   2892 S   0.0   0.3   0:00.01 gistfile1.txt.3
+  157 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 sdhci
+  158 root     -51   0       0      0      0 S   0.0   0.0   0:00.00 irq/91-mmc2
+  159 root      -2   0       0      0      0 S   0.0   0.0   0:00.38 2d channel
+  160 root      -2   0       0      0      0 S   0.0   0.0   0:00.48 3d channel
+  161 root     -51   0       0      0      0 S   0.0   0.0   0:00.00 card0-crtc0
+  162 root     -51   0       0      0      0 S   0.0   0.0   0:00.00 card0-crtc1
+  163 root      20   0       0      0      0 I   0.0   0.0   0:00.00 kworker/1:3+
+  164 root      20   0       0      0      0 I   0.0   0.0   0:00.27 kworker/1:4+
+  165 root      20   0       0      0      0 I   0.0   0.0   0:00.65 kworker/1:5+
+  166 root      20   0       0      0      0 I   0.0   0.0   0:00.00 kworker/1:6+
+  167 root      20   0       0      0      0 I   0.0   0.0   0:00.00 kworker/1:7
+  168 root     -51   0       0      0      0 S   0.0   0.0   0:00.00 irq/131-780+
+  169 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 mmc_complete
+  170 root     -51   0       0      0      0 S   0.0   0.0   0:00.00 irq/87-tegr+
+  171 root     -51   0       0      0      0 S   0.0   0.0   0:00.68 irq/65-tegr+
+  172 root      20   0       0      0      0 I   0.0   0.0   0:02.40 kworker/3:5+
+  173 root      20   0       0      0      0 S   0.0   0.0   0:00.07 jbd2/mmcblk+
+  174 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 ext4-rsv-co+
+  176 root       0 -20       0      0      0 I   0.0   0.0   0:00.48 kworker/1:2+
+  177 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 kworker/2:2+
+  178 root       0 -20       0      0      0 I   0.0   0.0   0:00.23 kworker/0:2+
+  198 root       0 -20       0      0      0 I   0.0   0.0   0:00.99 kworker/3:2+
+  708 root      20   0   13272   3028   2232 S   0.0   0.3   0:00.70 udevd
+  781 root     -51   0       0      0      0 S   0.0   0.0   0:00.00 irq/136-lm90
+  784 root     -51   0       0      0      0 S   0.0   0.0   0:00.00 irq/137-kxc+
+  794 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 kworker/0:3+
+  861 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 cfg80211
+  864 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 kworker/u9:+
+  866 root       0 -20       0      0      0 I   0.0   0.0   0:00.01 kworker/u9:+
+  871 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 tegra-vde
+ 1062 root      20   0       0      0      0 S   0.0   0.0   0:00.00 jbd2/mmcblk+
+ 1063 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 ext4-rsv-co+
+ 1576 message+  20   0    4584   3064   2216 S   0.0   0.3   0:01.55 dbus-daemon
+ 1606 root      20   0   46584  12436  10968 S   0.0   1.2   0:01.16 NetworkMana+
+ 1635 root      20   0       0      0      0 S   0.0   0.0   0:00.11 wlan0
+ 1637 root      20   0    7300   5792   5436 S   0.0   0.6   0:00.10 wpa_supplic+
+ 1644 root      20   0   54992   8576   7388 S   0.0   0.8   0:00.29 ModemManager
+ 1674 polkitd   20   0   37684   7128   5676 S   0.0   0.7   0:01.14 polkitd
+ 1931 root      20   0   10004   5164   3864 S   0.0   0.5   0:00.13 cupsd
+ 2006 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 mld
+ 2007 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 ipv6_addrco+
+ 2031 root      20   0   64208  11916  11140 S   0.0   1.2   0:00.15 sddm
+ 2061 root      20   0   35460   5232   4628 S   0.0   0.5   0:00.70 iio-sensor-+
+ 2094 root      20   0  214716  70084  57624 S   0.0   6.9   0:10.62 X
+ 2098 root      20   0    5608   1764   1392 S   0.0   0.2   0:00.00 sshd
+ 2149 root      20   0    4064    700    648 S   0.0   0.1   0:00.01 agetty
+ 2150 root      20   0    4064    664    612 S   0.0   0.1   0:00.01 agetty
+ 2151 root      20   0    4064    672    620 S   0.0   0.1   0:00.01 agetty
+ 2152 root      20   0    4064    664    612 S   0.0   0.1   0:00.01 agetty
+ 2153 root      20   0    4064    684    632 S   0.0   0.1   0:00.00 agetty
+ 2154 root      20   0    4064    664    612 S   0.0   0.1   0:00.01 agetty
+ 2161 root      20   0   53268  12616  11712 S   0.0   1.2   0:00.42 sddm-helper
+ 2166 root      20   0   36844   3132   2860 S   0.0   0.3   0:00.16 elogind-dae+
+ 2174 hedmo     20   0   29204   4132   3740 S   0.0   0.4   0:00.01 gnome-keyri+
+ 2181 hedmo     20   0  108756  27984  25332 S   0.0   2.8   0:01.02 startplasma+
+ 2198 hedmo     20   0    4204   1824   1584 S   0.0   0.2   0:00.00 dbus-launch
+ 2215 hedmo     20   0    4216   2512   2032 S   0.0   0.2   0:01.31 dbus-daemon
+ 2315 distcc    35  15    2512    732    668 S   0.0   0.1   0:00.00 distccd
+ 2320 distcc    35  15    2512    104      0 S   0.0   0.0   0:00.00 distccd
+ 2322 distcc    35  15    2512    104      0 S   0.0   0.0   0:00.00 distccd
+ 2323 distcc    35  15    2512    104      0 S   0.0   0.0   0:00.00 distccd
+ 2324 distcc    35  15    2512    104      0 S   0.0   0.0   0:00.00 distccd
+ 2325 distcc    35  15    2512    104      0 S   0.0   0.0   0:00.00 distccd
+ 2326 distcc    35  15    2512    104      0 S   0.0   0.0   0:00.00 distccd
+ 2351 hedmo     20   0  113188  27796  25436 S   0.0   2.8   0:00.51 plasma_sess+
+ 2356 hedmo     20   0    1936     68      0 S   0.0   0.0   0:00.00 start_kdein+
+ 2357 hedmo     20   0  100396  20984  18556 S   0.0   2.1   0:00.25 kdeinit5
+ 2358 hedmo     20   0  136128  30932  28024 S   0.0   3.1   0:00.68 klauncher
+ 2384 hedmo     20   0  237192  55040  47636 S   0.0   5.4   0:03.04 kded5
+ 2389 hedmo     20   0  385404  99284  82276 S   0.0   9.8   0:06.24 kwin_x11
+ 2396 hedmo     20   0  138724  27576  24700 S   0.0   2.7   0:00.45 kactivityma+
+ 2399 hedmo     20   0   25448   4012   3752 S   0.0   0.4   0:00.04 dconf-servi+
+ 2409 hedmo     20   0    6060   1680   1512 S   0.0   0.2   0:00.01 xsettingsd
+ 2414 hedmo     20   0  137420  33064  28820 S   0.0   3.3   0:01.42 kglobalacce+
+ 2444 hedmo     20   0  140764  36248  32552 S   0.0   3.6   0:01.08 ksmserver
+ 2446 root      20   0   63164   9148   8012 S   0.0   0.9   0:00.80 udisksd
+ 2466 root      20   0   35748   5396   4884 S   0.0   0.5   0:00.21 upowerd
+ 2473 hedmo     20   0  147368  35856  32648 S   0.0   3.5   0:00.96 org_kde_pow+
+ 2478 hedmo     20   0  158708  34532  31428 S   0.0   3.4   0:00.88 polkit-kde-+
+ 2479 hedmo     20   0  140372  33284  30012 S   0.0   3.3   0:00.89 kaccess
+ 2480 hedmo     20   0   86288  15648  14072 S   0.0   1.5   0:00.23 xembedsnipr+
+ 2481 hedmo     20   0  756844 165308 121180 S   0.0  16.4   0:14.52 plasmashell
+ 2482 hedmo     20   0   87368  16452  14880 S   0.0   1.6   0:00.23 gmenudbusme+
+ 2493 hedmo     20   0  366784   9616   6668 S   0.0   1.0   0:00.37 pulseaudio
+ 2495 hedmo     20   0  307160  94884  79628 S   0.0   9.4   0:08.15 konsole
+ 2517 hedmo     20   0  108388  12208   9580 S   0.0   1.2   0:08.69 conky
+ 2520 hedmo     20   0   38596   5140   4712 S   0.0   0.5   0:00.05 gsettings-h+
+ 2541 hedmo     20   0   40344   2976   2656 S   0.0   0.3   0:00.03 obexd
+ 2544 hedmo     20   0   86180  16652  15056 S   0.0   1.6   0:00.25 kscreen_bac+
+ 2600 hedmo     20   0   40308   5068   4720 S   0.0   0.5   0:00.04 agent
+ 2609 hedmo     20   0    3776   1732   1596 S   0.0   0.2   0:00.00 xbindkeys
+ 2748 hedmo     20   0    8340   3504   3132 S   0.0   0.3   0:00.16 bash
+ 2751 hedmo     20   0    8340   3284   2996 S   0.0   0.3   0:00.04 bash
+ 2754 hedmo     20   0    8340   3288   3000 S   0.0   0.3   0:00.03 bash
+ 2757 hedmo     20   0    8340   3504   3216 S   0.0   0.3   0:00.04 bash
+ 2760 hedmo     20   0    8340   3516   3208 S   0.0   0.3   0:00.03 bash
+ 2787 hedmo     20   0   81968  17980  16620 S   0.0   1.8   0:00.16 kioslave5
+ 2791 hedmo     20   0 1122864  16628  15492 S   0.0   1.6   0:00.10 kioslave5
+ 2793 hedmo     20   0   72216  13320  12304 S   0.0   1.3   0:00.08 kioslave5
+ 2798 hedmo     20   0   72216  13556  12540 S   0.0   1.3   0:00.07 kioslave5
+ 2800 hedmo     20   0   72216  13728  12712 S   0.0   1.4   0:00.08 kioslave5
+ 2845 hedmo     20   0   72216  13640  12624 S   0.0   1.4   0:00.05 kioslave5
+ 2849 root      20   0   11164   3728   3368 S   0.0   0.4   0:00.03 sudo
+ 2850 root      20   0    8028   2240   2044 S   0.0   0.2   0:00.01 su
+ 2853 root      20   0    8328   3436   3160 S   0.0   0.3   0:00.02 bash
+ 2855 root      20   0    8212   3260   3012 S   0.0   0.3   0:00.02 gistfile1.t+
 
 ==== distro version ====
 
@@ -7830,7 +7883,7 @@ VERSION_ID="2.8"
 
 ==== kernel version ====
 
-Linux version 5.17.0-next-20220324+ (hedmo@mya51) (armv7a-hardfloat-linux-gnueabi-gcc (Gentoo 11.2.1_p20220115 p4) 11.2.1 20220115, GNU ld (Gentoo 2.35.2 p1) 2.35.2) #12 SMP Sun Apr 3 19:36:13 CEST 2022
+Linux version 5.17.0-next-20220324+ (hedmo@mya51) (armv7a-hardfloat-linux-gnueabi-gcc (Gentoo 11.2.1_p20220115 p4) 11.2.1 20220115, GNU ld (Gentoo 2.35.2 p1) 2.35.2) #13 SMP Sat Apr 9 18:26:18 CEST 2022
 
 ==== kernel cmdline ====
 
@@ -7839,47 +7892,47 @@ console=tty0 root=/dev/mmcblk1p3 rw
 ==== meminfo ====
 
 MemTotal:        1010204 kB
-MemFree:          256956 kB
-MemAvailable:     718312 kB
-Buffers:           81332 kB
-Cached:           438416 kB
+MemFree:          246024 kB
+MemAvailable:     716996 kB
+Buffers:           82392 kB
+Cached:           449096 kB
 SwapCached:            0 kB
-Active:           205592 kB
-Inactive:         442468 kB
-Active(anon):        996 kB
-Inactive(anon):   182460 kB
-Active(file):     204596 kB
-Inactive(file):   260008 kB
-Unevictable:       40932 kB
+Active:           205284 kB
+Inactive:         450320 kB
+Active(anon):       1032 kB
+Inactive(anon):   180476 kB
+Active(file):     204252 kB
+Inactive(file):   269844 kB
+Unevictable:       43236 kB
 Mlocked:               0 kB
 HighTotal:        260096 kB
-HighFree:            528 kB
+HighFree:            532 kB
 LowTotal:         750108 kB
-LowFree:          256428 kB
+LowFree:          245492 kB
 SwapTotal:       2097148 kB
 SwapFree:        2097148 kB
-Dirty:               204 kB
+Dirty:               104 kB
 Writeback:             0 kB
-AnonPages:        169268 kB
-Mapped:           200244 kB
-Shmem:             46668 kB
-KReclaimable:      20888 kB
-Slab:              38396 kB
-SReclaimable:      20888 kB
-SUnreclaim:        17508 kB
-KernelStack:        2188 kB
-PageTables:         6520 kB
+AnonPages:        167424 kB
+Mapped:           197608 kB
+Shmem:             48916 kB
+KReclaimable:      21012 kB
+Slab:              38548 kB
+SReclaimable:      21012 kB
+SUnreclaim:        17536 kB
+KernelStack:        2396 kB
+PageTables:         6916 kB
 NFS_Unstable:          0 kB
 Bounce:                0 kB
 WritebackTmp:          0 kB
 CommitLimit:     2602248 kB
-Committed_AS:    1274736 kB
+Committed_AS:    1270308 kB
 VmallocTotal:     245760 kB
-VmallocUsed:        6048 kB
+VmallocUsed:        6896 kB
 VmallocChunk:          0 kB
-Percpu:              544 kB
+Percpu:              576 kB
 CmaTotal:         262144 kB
-CmaFree:          117288 kB
+CmaFree:          117544 kB
 
 ==== devfreq/trans_stat ====
 
@@ -7895,16 +7948,16 @@ CmaFree:          117288 kB
   108000000:         0         0         0         0         0         0         0         0         0         0         0         0         0         0         0         0         0         0         0
   204000000:         0         0         0         0         0         0         0         0         0         0         0         0         0         0         0         0         0         0         0
   333500000:         0         0         0         0         0         0         0         0         0         0         0         0         0         0         0         0         0         0         0
-  375000000:         0         0         0         0         0         0         0         0         0         0         4         1         0         2         0         2         0         3     88420
-* 400000000:         0         0         0         0         0         0         0         0         0         5         0         0         0        23         0         7         0        32    241890
-  416000000:         0         0         0         0         0         0         0         0         0         0         7         0         0         3         0         2         0         5      5150
-  450000000:         0         0         0         0         0         0         0         0         0         0         1         3         0         9         0         8         0         8      5780
-  500000000:         0         0         0         0         0         0         0         0         0         2        23         0        13         0         0        15         0        27      8480
-  533000000:         0         0         0         0         0         0         0         0         0         0         0         0         0         4         0         1         0         2       910
-  625000000:         0         0         0         0         0         0         0         0         0         1         7         5         8         9         2         0         0        20      3200
-  667000000:         0         0         0         0         0         0         0         0         0         0         0         0         0         0         0         1         0         0       140
-  800000000:         0         0         0         0         0         0         0         0         0         4        26         8         8        30         5        16         1         0     34820
-Total transition : 363
+  375000000:         0         0         0         0         0         0         0         0         0         0         0         1         0         0         0         0         0         0       430
+  400000000:         0         0         0         0         0         0         0         0         0         1         0        52       185         5         0        10         0        20     43900
+* 416000000:         0         0         0         0         0         0         0         0         0         0       188         0         0        11         0         5         0        17     22440
+  450000000:         0         0         0         0         0         0         0         0         0         0        52       135         0        13         1         8         0        30     21850
+  500000000:         0         0         0         0         0         0         0         0         0         0         8         9        16         0         0        13         0        30      7150
+  533000000:         0         0         0         0         0         0         0         0         0         0         0         0         0         5         0         0         0         6      1460
+  625000000:         0         0         0         0         0         0         0         0         0         0         8         6         5        16         3         0         0        10      2540
+  667000000:         0         0         0         0         0         0         0         0         0         0         0         0         0         0         0         2         0         2       370
+  800000000:         0         0         0         0         0         0         0         0         0         0        17        19        33        26         7        10         4         0     36140
+Total transition : 989
 
 ==== cpufreq/stats/trans_table ====
 
@@ -7914,11 +7967,11 @@ CONFIG_CPU_FREQ_STAT disabled
 
            CPU0       CPU1       CPU2       CPU3       
  24:          0          0          0          0 GIC-0  29 Edge      twd
- 25:      28829          0          0          0       LIC   0 Level     tegra_timer
- 26:          0      19469          0          0       LIC   1 Level     tegra_timer
- 27:          0          0      17408          0       LIC  41 Level     tegra_timer
- 28:          0          0          0      17303       LIC  42 Level     tegra_timer
- 29:      20157          0          0          0       LIC  65 Level     host1x_syncpt
+ 25:      14951          0          0          0       LIC   0 Level     tegra_timer
+ 26:          0      10795          0          0       LIC   1 Level     tegra_timer
+ 27:          0          0      11405          0       LIC  41 Level     tegra_timer
+ 28:          0          0          0      11095       LIC  42 Level     tegra_timer
+ 29:       6583          0          0          0       LIC  65 Level     host1x_syncpt
  33:          0          0          0          0       LIC 104 Level     apbdma.0
  34:          0          0          0          0       LIC 105 Level     apbdma.1
  35:          0          0          0          0       LIC 106 Level     apbdma.2
@@ -7929,11 +7982,11 @@ CONFIG_CPU_FREQ_STAT disabled
  40:          0          0          0          0       LIC 111 Level     apbdma.7
  41:          0          0          0          0       LIC 112 Level     apbdma.8
  42:          0          0          0          0       LIC 113 Level     apbdma.9
- 43:        229          0          0          0       LIC 114 Level     apbdma.10
- 44:        222          0          0          0       LIC 115 Level     apbdma.11
+ 43:        237          0          0          0       LIC 114 Level     apbdma.10
+ 44:        225          0          0          0       LIC 115 Level     apbdma.11
  45:          0          0          0          0       LIC 116 Level     apbdma.12
  46:          0          0          0          0       LIC 117 Level     apbdma.13
- 47:          0          0          0          0       LIC 118 Level     apbdma.14
+ 47:         82          0          0          0       LIC 118 Level     apbdma.14
  48:          0          0          0          0       LIC 119 Level     apbdma.15
  49:          0          0          0          0       LIC 128 Level     apbdma.16
  50:          0          0          0          0       LIC 129 Level     apbdma.17
@@ -7951,23 +8004,25 @@ CONFIG_CPU_FREQ_STAT disabled
  62:          0          0          0          0       LIC 141 Level     apbdma.29
  63:          0          0          0          0       LIC 142 Level     apbdma.30
  64:          0          0          0          0       LIC 143 Level     apbdma.31
- 65:        358          0          0          0       LIC  45 Level     tegra-devfreq
+ 65:       1054          0          0          0       LIC  45 Level     tegra-devfreq
+ 74:          0          0          0          0       LIC   9 Level     6001a000.vde
+ 78:        329          0          0          0       LIC  46 Level     70006200.serial
  79:          0          0          0          0       LIC   2 Level     7000e000.rtc
  80:          0          0          0          0       LIC  38 Level     7000c000.i2c
- 81:        754          0          0          0       LIC  84 Level     7000c400.i2c
- 82:       3039          0          0          0       LIC  92 Level     7000c500.i2c
- 83:         32          0          0          0       LIC 120 Level     7000c700.i2c
- 84:       1462          0          0          0       LIC  53 Level     7000d000.i2c
+ 81:        272          0          0          0       LIC  84 Level     7000c400.i2c
+ 82:        841          0          0          0       LIC  92 Level     7000c500.i2c
+ 83:         33          0          0          0       LIC 120 Level     7000c700.i2c
+ 84:       1829          0          0          0       LIC  53 Level     7000d000.i2c
  85:          0          0          0          0       LIC  77 Level     7000f000.memory-controller
  86:          0          0          0          0       LIC  78 Level     7000f400.memory-controller
  87:          0          0          0          0       LIC 102 Level     tegra_tsensor
- 88:         54          0          0          0       LIC  81 Level     snd_hda_tegra
- 90:      27999          0          0          0       LIC  14 Level     mmc1
- 91:     120646          0          0          0       LIC  19 Level     mmc2
+ 88:         53          0          0          0       LIC  81 Level     snd_hda_tegra
+ 90:      30649          0          0          0       LIC  14 Level     mmc1
+ 91:     119301          0          0          0       LIC  19 Level     mmc2
  92:        431          0          0          0       LIC  31 Level     mmc0
- 93:        337          0          0          0       LIC  20 Level     tegra-usb
- 94:      15734          0          0          0       LIC  21 Level     tegra-usb
- 95:       1924          0          0          0       LIC  97 Level     tegra-usb
+ 93:        222          0          0          0       LIC  20 Level     tegra-usb
+ 94:       6440          0          0          0       LIC  21 Level     tegra-usb
+ 95:       1771          0          0          0       LIC  97 Level     tegra-usb
  96:          0          0          0          0       LIC 144 Level     arm-pmu
  97:          0          0          0          0       LIC 145 Level     arm-pmu
  98:          0          0          0          0       LIC 146 Level     arm-pmu
@@ -7975,7 +8030,7 @@ CONFIG_CPU_FREQ_STAT disabled
 100:          0          0          0          0      GPIO 146 Level     pad-ec
 101:          1          0          0          0       LIC  86 Level     tps65910
 108:          1          0          0          0  tps65910   6 Level     tps65910-rtc
-127:       1475          0          0          0       LIC  73 Level     54200000.dc
+127:       1483          0          0          0       LIC  73 Level     54200000.dc
 128:          0          0          0          0       LIC  74 Level     54240000.dc
 129:          2          0          0          0       LIC  75 Level     54280000.hdmi
 130:          0          0          0          0      GPIO 111 Edge      hpd
@@ -7984,15 +8039,16 @@ CONFIG_CPU_FREQ_STAT disabled
 133:          0          0          0          0      GPIO 130 Edge      Volume Up
 134:          0          0          0          0      GPIO 131 Edge      Volume Down
 135:          0          0          0          0      GPIO  82 Edge      Mode
-136:          0          0          0          0      GPIO 117 Edge      kxcjk1013_event
-137:          0          0          0          0      GPIO 226 Edge      lm90
+136:          0          0          0          0      GPIO 226 Edge      lm90
+137:          0          0          0          0      GPIO 117 Edge      kxcjk1013_event
 142:          0          0          0          0      GPIO 178 Edge      Headphones detection
+143:          1          0          0          0      GPIO 166 Edge      host_wake
 IPI0:          0          0          0          0  CPU wakeup interrupts
 IPI1:          0          0          0          0  Timer broadcast interrupts
-IPI2:      29753      47317     154210      31710  Rescheduling interrupts
-IPI3:       9517      12072      13643      13127  Function call interrupts
+IPI2:      15898      22194      22450     140947  Rescheduling interrupts
+IPI3:       4097       5102       5230       8165  Function call interrupts
 IPI4:          0          0          0          0  CPU stop interrupts
-IPI5:       4855       2163       2200       2047  IRQ work interrupts
+IPI5:       2278       1051       1117       1001  IRQ work interrupts
 IPI6:          0          0          0          0  completion interrupts
 Err:          0
 
@@ -8041,7 +8097,7 @@ Err:          0
                 audio0_2x             0        0        0    48000000          0     0  50000         N
  clk_32k                              2        2        0       32768          0     0  50000         Y
     pmc_blink_override                1        1        0       32768          0     0  50000         Y
-       pmc_blink                      1        1        0       32768          0     0  50000         Y
+       pmc_blink                      2        2        0       32768          0     0  50000         Y
     kbc                               0        0        0       32768          0     0  50000         N
     rtc                               2        2        0       32768          0     0  50000         Y
  osc                                  2        2        1    26000000          0     0  50000         Y
@@ -8057,15 +8113,15 @@ Err:          0
           epp                         0        0        0   133333334          0     0  50000         N
           mpe                         0        0        0   133333334          0     0  50000         N
           vi_sensor                   0        0        0   133333334          0     0  50000         N
-       pll_c                          4        4        0   600000000          0     0  50000         Y
-          vde                         0        0        0   300000000          0     0  50000         N
-          3d2                         1        1        0   300000000          0     0  50000         Y
-          3d                          1        1        0   300000000          0     0  50000         Y
+       pll_c                          2        2        0   600000000          0     0  50000         Y
+          3d2                         0        0        0   300000000          0     0  50000         N
+          3d                          0        0        0   300000000          0     0  50000         N
           2d                          1        1        0   300000000          0     0  50000         Y
           host1x                      1        1        0   150000000          0     0  50000         Y
           pll_c_out1_div              0        0        0   600000000          0     0  50000         Y
              pll_c_out1               0        0        0   600000000          0     0  50000         N
-       pll_p                          9       10        0   408000000          0     0  50000         Y
+       pll_p                         10       11        0   408000000          0     0  50000         Y
+          vde                         0        0        0   408000000          0     0  50000         N
           hda2codec_2x                1        1        0    48000000          0     0  50000         Y
           hda                         1        1        0   102000000          0     0  50000         Y
           sbc6                        0        0        0    90666667          0     0  50000         N
@@ -8079,7 +8135,7 @@ Err:          0
           sdmmc1                      1        1        0   102000000          0     0  50000         Y
           uarte                       0        0        0   408000000          0     0  50000         N
           uartd                       0        0        0   408000000          0     0  50000         N
-          uartc                       0        0        0   408000000          0     0  50000         N
+          uartc                       1        1        0    62769231          0     0  50000         Y
           uartb                       0        0        0   408000000          0     0  50000         N
           uarta                       0        0        0   408000000          0     0  50000         N
           csite                       1        1        0   136000000          0     0  50000         Y
@@ -8111,7 +8167,7 @@ Err:          0
                    pll_a_out0_div       1        1        0    11289600          0     0  50000         Y
                       pll_a_out0       1        1        0    11289600          0     0  50000         Y
                          extern1       1        1        0    11289600          0     0  50000         Y
-                            pmc_clk_out_1       6        6        0    11289600          0     0  50000         Y
+                            pmc_clk_out_1       4        4        0    11289600          0     0  50000         Y
                          i2s4         0        0        0    11289600          0     0  50000         N
                          i2s3         0        0        0    11289600          0     0  50000         N
                          i2s2         0        0        0    11289600          0     0  50000         N
@@ -8133,10 +8189,10 @@ Err:          0
              dsib                     0        0        0   297000000          0     0  50000         N
              dsia                     0        0        0   297000000          0     0  50000         N
        pll_u                          3        3        0   480000000          0     0  50000         Y
-       pll_x                          1        1        0  1200000000          0     0  50000         Y
-          cclk_g                      1        1        0  1200000000          0     0  50000         Y
-             twd                      2        2        0   600000000          0     0  50000         Y
-          pll_x_out0                  0        0        0   600000000          0     0  50000         Y
+       pll_x                          1        1        0   640000000          0     0  50000         Y
+          cclk_g                      1        1        0   640000000          0     0  50000         Y
+             twd                      2        2        0   320000000          0     0  50000         Y
+          pll_x_out0                  0        0        0   320000000          0     0  50000         Y
     clk_m                             7       12        0    26000000          0     0  50000         Y
        tsensor                        1        1        0      500000          0     0  50000         Y
        sata_cold                      0        0        0    26000000          0     0  50000         N
@@ -8198,7 +8254,8 @@ Err:          0
  vdd_ac_bat                      10   12      0 unknown  5000mV     0mA  5000mV  5000mV 
     7d008000.usb-phy-vbus         1                                 0mA     0mV     0mV
     vrtc                          0    0      0  normal     0mV     0mA     0mV     0mV 
-    vdd_1v8_gen                   8    8      0  normal  3300mV     0mA  1500mV  3300mV 
+    vdd_1v8_gen                   9    9      0  normal  3300mV     0mA  1500mV  3300mV 
+       serial0-0-vddio            1                                 0mA     0mV     0mV
        2-000f-vddio               1                                 0mA     0mV     0mV
        2-000f-vdd                 1                                 0mA     0mV     0mV
        78000400.mmc-vqmmc         1                                 0mA     0mV     0mV
@@ -8228,49 +8285,50 @@ Err:          0
     vdd_3v3_sys                   4    3      0 unknown  3300mV     0mA  3300mV  3300mV 
        4-004c-vcc                 1                                 0mA     0mV     0mV
        54280000.hdmi-vdd          1                                 0mA     0mV     0mV
-       vdd_3v3_com                2    1      0 unknown  3300mV     0mA  3300mV  3300mV 
+       vdd_3v3_com                3    2      0 unknown  3300mV     0mA  3300mV  3300mV 
+          serial0-0-vbat          1                                 0mA     0mV     0mV
           78000400.mmc-vmmc       1                                 0mA  3300mV  3400mV
  vdd_cpu,vdd_sys                  2    1      0  normal  1000mV     0mA   600mV  1400mV 
-    cpu0-cpu                      1                                 0mA  1000mV  1250mV
+    cpu0-cpu                      1                                 0mA   900mV  1250mV
  tps62361-vout                    2    1      0  normal  1300mV     0mA   500mV  1770mV 
     7000e400.pmc-core             1                                 0mA  1300mV  1350mV
 
 ==== cpuidle/state/time ====
 
-146479489
+63674802
 0
-178441776
-109099335
-45751353
-182998028
-110410379
-40402375
-183018516
-106246261
-52175669
-183052303
+29600788
+51311642
+17174310
+30680712
+49479862
+17999722
+30685761
+50900415
+17336000
+30692296
 
 ==== sensors ====
 
 tsensor0_thermal-virtual-0
 Adapter: Virtual device
-temp1:        +58.9°C  (crit = +90.0°C)
+temp1:        +66.9°C  (crit = +90.0°C)
 
 pad_battery-virtual-0
 Adapter: Virtual device
-temp1:        +25.5°C  
+temp1:        +27.4°C  
 
 nct1008-i2c-4-4c
 Adapter: 7000d000.i2c
-temp1:        +43.0°C  (low  = -64.0°C, high = +57.0°C)
+temp1:        +51.0°C  (low  = -64.0°C, high = +57.0°C)
                        (crit = +90.0°C, hyst = +80.0°C)
-temp2:        +53.8°C  (low  = -64.0°C, high = +75.0°C)
+temp2:        +61.0°C  (low  = -64.0°C, high = +75.0°C)
                        (crit = +90.0°C, hyst = +80.0°C)
 
 pad_battery-isa-0000
 Adapter: ISA adapter
 in0:           8.25 V  (max =  +8.40 V)
-temp:         +25.5°C  (low  =  +0.0°C, high = +45.0°C)
+temp:         +27.4°C  (low  =  +0.0°C, high = +45.0°C)
 curr1:         0.00 A  (max =  +0.00 A)
 
 
@@ -8326,7 +8384,7 @@ state17:       0        0        0        0        0        0        0        0 
 Device: /org/freedesktop/UPower/devices/battery_pad_battery
   native-path:          pad-battery
   power supply:         yes
-  updated:              Sat 09 Apr 2022 05:47:10 PM CEST (102 seconds ago)
+  updated:              Sat 09 Apr 2022 06:33:37 PM CEST (90 seconds ago)
   has history:          yes
   has statistics:       yes
   battery
@@ -8336,19 +8394,23 @@ Device: /org/freedesktop/UPower/devices/battery_pad_battery
     warning-level:       none
     energy:              36.2087 Wh
     energy-empty:        0 Wh
-    energy-full:         42.3669 Wh
-    energy-full-design:  42.3669 Wh
+    energy-full:         42.3617 Wh
+    energy-full-design:  42.3617 Wh
     energy-rate:         0 W
     voltage:             8.248 V
     percentage:          97%
-    temperature:         25.4 degrees C
+    temperature:         27.4 degrees C
     capacity:            100%
     technology:          lithium-ion
     icon-name:          'battery-full-charged-symbolic'
+  History (charge):
+    1649522017	0.000	unknown
+  History (rate):
+    1649522017	0.000	unknown
 
 Device: /org/freedesktop/UPower/devices/DisplayDevice
   power supply:         yes
-  updated:              Sat 09 Apr 2022 05:45:10 PM CEST (222 seconds ago)
+  updated:              Sat 09 Apr 2022 06:33:37 PM CEST (90 seconds ago)
   has history:          no
   has statistics:       no
   battery
@@ -8356,7 +8418,7 @@ Device: /org/freedesktop/UPower/devices/DisplayDevice
     state:               fully-charged
     warning-level:       none
     energy:              36.2087 Wh
-    energy-full:         42.3669 Wh
+    energy-full:         42.3617 Wh
     energy-rate:         0 W
     percentage:          97%
     icon-name:          'battery-full-charged-symbolic'
@@ -8378,11 +8440,12 @@ heg                             on                                              
     /devices/soc0/50000000.host1x/54140000.gr2d         active                     1100000
 mpe                             off-0                                              0
 vdec                            off-0                                              0
+    /devices/soc0/6001a000.vde                          suspended                  0
 venc                            off-0                                              0
-td2                             on                                                 1100000
-    /devices/genpd:1:54180000.gr3d                      active                     1100000
-td                              on                                                 1100000
-    /devices/genpd:0:54180000.gr3d                      active                     1100000
+td2                             off-0                                              0
+    /devices/genpd:1:54180000.gr3d                      suspended                  0
+td                              off-0                                              0
+    /devices/genpd:0:54180000.gr3d                      suspended                  0
 core                            on                                                 1300000
                                                 td, td2, venc, vdec, mpe, heg
     /devices/soc0/50000000.host1x/54280000.hdmi         active                     1000000
@@ -8407,30 +8470,30 @@ core                            on                                              
 
  node                                  tag          avg         peak
 --------------------------------------------------------------------
-Memory Controller                            2147981311   2147483647
-  6000c800.actmon                        0            0      3200000
+Memory Controller                                498648      3600000
+  6000c800.actmon                        0            0      3600000
   54240000.dc                            1            0            0
   54240000.dc                            1            0            0
   54240000.dc                            1            0            0
   54240000.dc                            1            0            0
-  54200000.dc                            1            0            0
+  54200000.dc                            1          984       594000
   54200000.dc                            1            0            0
   54200000.dc                            1            0            0
   54200000.dc                            1       497664       594000
 ptcr                                                  0            0
-display0a                                    2147483647   2147483647
+display0a                                        497664      2376000
   54200000.dc                            1       497664       594000
 display0ab                                            0            0
   54240000.dc                            1            0            0
-display0b                                    2147483647   2147483647
+display0b                                             0            0
   54200000.dc                            1            0            0
 display0bb                                            0            0
   54240000.dc                            1            0            0
-display0c                                    2147483647   2147483647
-  54200000.dc                            1            0            0
+display0c                                           984      2376000
+  54200000.dc                            1          984       594000
 display0cb                                            0            0
   54240000.dc                            1            0            0
-display1b                                    2147483647   2147483647
+display1b                                             0            0
   54200000.dc                            1            0            0
 display1bb                                            0            0
   54240000.dc                            1            0            0
@@ -8464,8 +8527,8 @@ vdember                                               0            0
 vdemcer                                               0            0
 vdetper                                               0            0
 mpcorelpr                                             0            0
-mpcorer                                      2147483647   2147483647
-  6000c800.actmon                        0            0      3200000
+mpcorer                                               0      3600000
+  6000c800.actmon                        0            0      3600000
 eppu                                                  0            0
 eppv                                                  0            0
 eppy                                                  0            0
@@ -8492,23 +8555,23 @@ vdebsevw                                              0            0
 vdedbgw                                               0            0
 vdembew                                               0            0
 vdetpmw                                               0            0
-External Memory Controller                   2147981311   2147483647
-  6000c800.actmon                        0            0      3200000
+External Memory Controller                       498648      3600000
+  6000c800.actmon                        0            0      3600000
   54240000.dc                            1            0            0
   54240000.dc                            1            0            0
   54240000.dc                            1            0            0
   54240000.dc                            1            0            0
-  54200000.dc                            1            0            0
+  54200000.dc                            1          984       594000
   54200000.dc                            1            0            0
   54200000.dc                            1            0            0
   54200000.dc                            1       497664       594000
-External Memory (DRAM)                       2147981311   2147483647
-  6000c800.actmon                        0            0      3200000
+External Memory (DRAM)                           498648      3600000
+  6000c800.actmon                        0            0      3600000
   54240000.dc                            1            0            0
   54240000.dc                            1            0            0
   54240000.dc                            1            0            0
   54240000.dc                            1            0            0
-  54200000.dc                            1            0            0
+  54200000.dc                            1          984       594000
   54200000.dc                            1            0            0
   54200000.dc                            1            0            0
   54200000.dc                            1       497664       594000
@@ -8552,10 +8615,25 @@ plane[42]: plane-1
 	color-encoding=ITU-R BT.601 YCbCr
 	color-range=YCbCr limited range
 plane[53]: plane-2
-	crtc=(null)
-	fb=0
-	crtc-pos=0x0+0+0
-	src-pos=0.000000x0.000000+0.000000+0.000000
+	crtc=crtc-0
+	fb=99
+		allocated by = X
+		refcount=1
+		format=AR24 little-endian (0x34325241)
+		modifier=0x0
+		size=64x64
+		layers:
+			size[0]=64x64
+			pitch[0]=256
+			offset[0]=0
+			obj[0]:
+				name=0
+				refcount=3
+				start=00010fea
+				size=16384
+				imported=no
+	crtc-pos=64x64+1121+572
+	src-pos=64.000000x64.000000+0.000000+0.000000
 	rotation=1
 	normalized-zpos=1
 	color-encoding=ITU-R BT.601 YCbCr
@@ -8596,7 +8674,7 @@ crtc[64]: crtc-0
 	active_changed=0
 	connectors_changed=0
 	color_mgmt_changed=0
-	plane_mask=1
+	plane_mask=5
 	connector_mask=1
 	encoder_mask=1
 	mode: "": 60 148500 1920 2008 2052 2200 1080 1084 1089 1125 0x0 0x5
@@ -8617,11 +8695,11 @@ connector[31]: HDMI-A-1
 	crtc=crtc-0
 	self_refresh_aware=0
 frames: 0
-vblank: 1475
+vblank: 1483
 underflow: 0
 overflow: 0
 frames total: 0
-vblank total: 1475
+vblank total: 1483
 underflow total: 0
 overflow total: 0
 frames: 0
@@ -8637,33 +8715,42 @@ overflow total: 0
 
 Module                  Size  Used by
 ipv6                  409600  22
-uvcvideo               94208  0
-videobuf2_vmalloc      16384  1 uvcvideo
 brcmfmac              294912  0
-videobuf2_memops       16384  1 videobuf2_vmalloc
 snd_hda_codec_hdmi     49152  1
-videobuf2_v4l2         24576  1 uvcvideo
 r8712u                159744  0
-videobuf2_common       49152  4 uvcvideo,videobuf2_vmalloc,videobuf2_memops,videobuf2_v4l2
-brcmutil               16384  1 brcmfmac
-videodev              180224  3 uvcvideo,videobuf2_common,videobuf2_v4l2
+tegra_vde              45056  0
 hid_multitouch         24576  0
+brcmutil               16384  1 brcmfmac
 hid_chicony            16384  0
 cfg80211              602112  2 r8712u,brcmfmac
-snd_soc_tegra30_i2s    16384  2
-snd_soc_tegra_pcm      16384  1 snd_soc_tegra30_i2s
+uvcvideo               94208  0
+videobuf2_dma_contig    20480  1 tegra_vde
+hci_uart               32768  0
+v4l2_h264              16384  1 tegra_vde
 snd_hda_tegra          16384  0
+btbcm                  20480  1 hci_uart
+videobuf2_dma_sg       16384  1 tegra_vde
+videobuf2_vmalloc      16384  1 uvcvideo
+snd_soc_tegra30_i2s    16384  2
 hid_generic            16384  0
-rfkill                 24576  3 cfg80211
 snd_hda_codec         102400  2 snd_hda_tegra,snd_hda_codec_hdmi
+bluetooth             466944  3 hci_uart,btbcm
+v4l2_mem2mem           24576  1 tegra_vde
+videobuf2_memops       16384  3 videobuf2_dma_sg,videobuf2_dma_contig,videobuf2_vmalloc
+snd_soc_tegra_pcm      16384  1 snd_soc_tegra30_i2s
+videobuf2_v4l2         24576  3 uvcvideo,tegra_vde,v4l2_mem2mem
 snd_soc_tegra30_ahub    16384  1 snd_soc_tegra30_i2s
-snd_soc_tegra_machine    28672  0
-regmap_mmio            16384  2 snd_soc_tegra30_i2s,snd_soc_tegra30_ahub
 snd_hda_core           65536  3 snd_hda_codec,snd_hda_tegra,snd_hda_codec_hdmi
-lm90                   28672  0
+videobuf2_common       49152  8 uvcvideo,tegra_vde,videobuf2_dma_sg,videobuf2_dma_contig,videobuf2_vmalloc,videobuf2_memops,v4l2_mem2mem,videobuf2_v4l2
 snd_soc_rt5640         77824  1
-kxcjk_1013             24576  0
+snd_soc_tegra_machine    28672  0
+asus_usb_device        16384  0
+regmap_mmio            16384  2 snd_soc_tegra30_i2s,snd_soc_tegra30_ahub
 snd_soc_rl6231         16384  1 snd_soc_rt5640
+videodev              180224  5 uvcvideo,tegra_vde,videobuf2_common,v4l2_mem2mem,videobuf2_v4l2
+kxcjk_1013             24576  0
+lm90                   28672  0
+rfkill                 24576  4 bluetooth,cfg80211
 
 ==== SMMU (T30+) ====
 
@@ -8751,7 +8838,7 @@ hda        no       0x00
 hc         yes      0x00
 ppcs       no       0x00
 sata       no       0x00
-vde        no       0x00
+vde        yes      0x02
 isp        no       0x00
 
 ==== MMC ====
